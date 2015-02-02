@@ -1,0 +1,22 @@
+body {
+	margin-top: 40px;
+	text-align: center;
+	font-size: 14px;
+	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+}
+
+#calendar {
+	/* Set the calendar to 900px wide. Adjust this depending on how much space is available on the student's webpage */
+	width: 900px;
+	margin: 0 auto;
+}
+
+/* This governs the style associated with the title that's displayed in each event */
+.fc-title, .fc-time-grid-event.fc-short .fc-title {
+	font-size: 14px;
+}
+
+/* This governs the style associated with the time that's displayed in each event */
+.fc-time-grid-event .fc-time {
+	font-size: 12px;
+}

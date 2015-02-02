@@ -1,0 +1,16 @@
+extends layout
+
+block stylesheets
+	link(rel='stylesheet' href='/fullcalendar/fullcalendar.css')
+	link(href="/stylesheets/calendar.css")
+
+block content
+	//- #calendar
+	h1= googleId
+
+block scripts
+	script(src="/fullcalendar/lib/jquery.min.js")
+	script(src="/fullcalendar/lib/moment.min.js")
+	script(src="/fullcalendar/fullcalendar.js")
+	script(type='text/javascript' src="/fullcalendar/gcal.js")
+	script(src="/js/calendar.js")
