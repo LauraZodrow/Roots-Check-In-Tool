@@ -8,11 +8,11 @@ var indexController = {
 	},
 
 	calendar: function(req, res) {
-		res.render('calendar', {googleId: req.params.id});
+		res.render('calendar');
 	},
 
 	nextStep: function(req, res) {
-		res.render('next-Step', {googleId: req.params.id});
+		res.render('next-Step', {googleId: req.params.id.toString()});
 	}
 };
 

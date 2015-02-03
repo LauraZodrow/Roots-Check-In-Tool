@@ -1,10 +1,10 @@
 var https = require('https');
 var User = require('../models/user');
+var _ = require('lodash');
 
-module.exports = {
+var googleController = {
 	getProfile: function(req, res) {
 		
-
 		// var options = {
 		// 	url: 'googleapis.com/',
 		// 	path: '/plus/v1/people/' + req.body.userid,
@@ -57,7 +57,6 @@ module.exports = {
 								res.send(err);
 							}
 							else {
-								console.log('About to redirect...');
 								res.send({id: data.id});
 							}
 						});
@@ -84,5 +83,44 @@ module.exports = {
 				})
 			});
 		});
+	},
+
+	getCalendar: function(req, res) {
+		var id = req.params.id; 
+		console.log('id', id);
+		User.findOne({googleId : id}, function(err, results) {
+			console.log('results email', results.email);
+			var googleEmail = results.email;
+			https.get('https://www.googleapis.com/calendar/v3/calendars/' + googleEmail + '/events/?access_token=' + results.access_token , function(response){
+				var datastring = '';
+			
+				// Accumulate the response data into a string
+				response.on('data', function(data){
+					datastring += data;
+				});
+
+				response.on('end', function() {
+					var data = JSON.parse(datastring);
+					var events_array = data.items;
+					console.log('datastring structure', _.keys(data))
+					console.log('Maybe this will work:', events_array.slice(-5))
+				});
+				
+			});
+
+			res.send(results);
+		});
+
+
+		// User.findOne({id: req.params.id}, function(err, doc){
+		// 	console.log('hello')
+		// })
+		 
+		// console.log('userid req', req.body.userid);
+
+		// https.get('https://www.googleapis.com/calendar/v3/calendars/'+ req.body.userid +'?access_token=' + req.body.access_token, function(response) {
+		// 	var datastring = '';
 	}
 };
+
+module.exports = googleController; 

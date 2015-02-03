@@ -20,9 +20,12 @@ app.post('/auth/getProfile', googleController.getProfile);
 
 // Next Step
 app.get('/next-step/:id', indexController.nextStep);
-
 // Calendar
-app.get('/calendar/:id', indexController.calendar);
+app.get('/calendar', indexController.calendar);
+
+
+//API Routes
+app.get('/api/getCalendar/:id', googleController.getCalendar);
 
 
 

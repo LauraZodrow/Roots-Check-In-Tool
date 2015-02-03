@@ -52,7 +52,7 @@
 
 	$(document).ready(function() {
 
-		console.log('GoogleId:', googleId);
+		// console.log('GoogleId:', googleId);
 		var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 		var date = new Date();
 		var dayOfWeek = daysOfWeek[date.getDay()];
@@ -69,6 +69,7 @@
 	            googleCalendarId: 'team@rootselementary.org',
 	            className: 'gcal-event'
 	        },
+
 			eventRender: function(event, element) {
 				// Use event.description if you need access to the event's description, use element.html() to get access to the entire HTML of the event element
  
@@ -108,6 +109,25 @@
 					element.find('.fc-title').append(" (" + event.location + ")");
 				}
     		},
+
+    		// eventAfterRender: function(event, element, view) {
+    		// 	console.log('eventid', event.id);
+    		// 	console.log('event title', event.title);
+    		// 	console.log('event location', event.location);
+    		// 	console.log('start', event.start._i);
+    		// 	var start = event.start._i;
+    		// 	var split = start.split("T");
+    		// 	console.log('split', split2);
+
+    		// 	// $.ajax({
+    		// 	// 	data: {
+    		// 	// 		googleEventId: event.id,
+
+    		// 	// 	}
+    		// 	// })
+
+    		// },
+
     		// Sets the calendar view to only show a single day
 	        defaultView: 'agendaDay',
 	        // Zooms the calendar in to show 5 minute intervals

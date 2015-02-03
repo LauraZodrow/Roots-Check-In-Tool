@@ -1,5 +1,16 @@
 extends layout
 
 block content
-	p Hello!
+	p Hello! 
+
+block scripts
+	script(src="/fullcalendar/lib/jquery.min.js")
+	script(src="/fullcalendar/lib/moment.min.js")
+	script(src="/fullcalendar/fullcalendar.js")
+	script(type='text/javascript' src="/fullcalendar/gcal.js")
+	script.
+		var googleId = #{googleId};
+		//- googleId = googleId.toString();
+	script(src='/js/calendar.js')
+	script(src='/js/next-step.js')
 
