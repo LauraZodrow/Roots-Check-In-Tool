@@ -127,25 +127,19 @@ var googleController = {
 						
 					}
 
-					req.user.calendar.push(googleDescription);
-					
-					//example
-					Board.findById(requestBoardId.boardId, function(err, doc){
-						post.customBoard.push(doc);
-						req.user.save(function(){
-							res.send(doc);
-						});
+					results.save(function(err, result){
+						res.send(result);
 					});
+
+					// req.user.calendar.push(googleDescription);
 					
 					if (googleDate == currentDate){
 							console.log('googleDate', googleDate);
 					}
 
-
 					// console.log('datastring structure', _.keys(data));
 					// console.log('Maybe this will work:', events_array.slice(-5));
-
-					//save user
+					
 				});
 		
 			});
