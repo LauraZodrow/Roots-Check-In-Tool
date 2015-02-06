@@ -12,7 +12,10 @@ var indexController = {
 	},
 
 	nextStep: function(req, res) {
-		res.render('next-Step', {googleId: req.params.id.toString()});
+		res.render('next-Step', {
+			googleId: req.params.id.toString(),
+			user:  req.user
+		});
 	}
 };
 

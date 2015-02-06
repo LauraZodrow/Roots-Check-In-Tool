@@ -12,7 +12,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: false}));
 
 var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
-mongoose.connect(mongoDB_URL + '/checkin');
+mongoose.connect(mongoDB_URL + '/rootsApp');
 
 app.get('/', indexController.index);
 app.get('/auth', indexController.auth);
