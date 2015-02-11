@@ -16,6 +16,10 @@ var indexController = {
 			googleId: req.params.id.toString(),
 			user:  req.user
 		});
+	},
+
+	scanInput: function(req, res){
+		res.render('scan-input');
 	}
 };
 

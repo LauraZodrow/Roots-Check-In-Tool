@@ -69,7 +69,7 @@ var googleController = {
 							googleId: data.id,
 							name: data.displayName,
 							access_token: req.body.access_token,
-							calendar: {}
+							calendar: []
 						}, function(err, user) {
 							if (err) {
 								console.error(err);
@@ -89,10 +89,9 @@ var googleController = {
 	getCalendar: function(req, res) {
 		var id = req.params.id; 
 
-		User.findOne({googleId : id}, function(err, results) {
-			console.log('results email', results.email);
-			var googleEmail = results.email;
-			https.get('https://www.googleapis.com/calendar/v3/calendars/' + googleEmail + '/events/?access_token=' + results.access_token , function(response){
+		User.findOne({googleId : id}, function(err, user) {
+			var googleEmail = user.email;
+			https.get('https://www.googleapis.com/calendar/v3/calendars/' + googleEmail + '/events/?access_token=' + user.access_token , function(response){
 				var datastring = '';
 			
 				// Accumulate the response data into a string
@@ -103,48 +102,44 @@ var googleController = {
 				response.on('end', function() {
 					var data = JSON.parse(datastring);
 					var events_array = data.items;
-					console.log('events_array', events_array);
 
 					var todaydate = moment().format();
 					var splitTodayDate = todaydate.split("T");
 					var spliceTodayDate = splitTodayDate.splice(0,1);
 					var currentDate = spliceTodayDate.toString();
 					
-					//find the date/time and convert it into only the date and make it into a string
-					for (i = 0; i < data.items.length; i++) {
-						var googleDate = data.items[i].start.dateTime;
-						var splitDate = googleDate.split("T");
-						var spliceDate = splitDate.splice(0,1);
-						var googleDate = spliceDate.toString();
-						 
-						
-						var googleEventId = data.items[i].id
-						var googleLocation = data.items[i].location;
-						var googleCreator = data.items[i].creator.email;
-						var googleStart = googleDate;
-						var googleDescription = data.items[i].description;
-						
-						
-					}
 
-					results.save(function(err, result){
+					var todays_events = _.filter(data.items, function(event) {
+						return event.start.dateTime.split("T").splice(0,1).toString() == currentDate;
+					});
+
+					_.forEach(todays_events, function(event) {
+						console.log('TIME', event.start.dateTime);
+
+						newEvent = {
+							date: event.start.dateTime.split("T").splice(0,1).toString(),
+							eventId: event.id,
+							location: event.location,
+							creator: event.creator.email,
+							// TODO: Figure out how to get start time
+							start: event.start.dateTime,
+							description: event.description
+						};
+						var eventExists = _.some(user.calendar, function(event) {
+							return event.eventId === newEvent.eventId;
+						});
+						if (!eventExists) {
+							user.calendar.push(newEvent);
+						}
+					});
+
+					user.save(function(err, result){
 						res.send(result);
 					});
 
-					// req.user.calendar.push(googleDescription);
-					
-					if (googleDate == currentDate){
-							console.log('googleDate', googleDate);
-					}
-
-					// console.log('datastring structure', _.keys(data));
-					// console.log('Maybe this will work:', events_array.slice(-5));
-					
 				});
 		
 			});
-
-			res.send(results);
 		});
 
 	}

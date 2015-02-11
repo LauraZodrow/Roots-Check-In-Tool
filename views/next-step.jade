@@ -1,17 +1,29 @@
 extends layout
 
 block content
-	p Hello! 
+	.container
+		#name
+		.progress.countDown
+			.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
+		.timer
+		#event
+		.eventImageContainer.row
+			.locationImage.col-md-4
+			.activityImage.col-md-4
+			.creatorImage.col-md-4
+		.eventTextContainer.row
+			.locationText.col-md-4
+			.activityText.col-md-4
+			.creatorText.col-md-4
+		button.scan-button.row
+			a(href='scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com%2Fnext-step%2F104196343814516838575').col-md-12 Scan
 
 block scripts
-	script(src="/fullcalendar/lib/jquery.min.js")
-	script(src="/fullcalendar/lib/moment.min.js")
-	script(src="/fullcalendar/fullcalendar.js")
-	script(type='text/javascript' src="/fullcalendar/gcal.js")
 	script(src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js")
 	script.
 		var googleId = #{googleId};
-		//- googleId = googleId.toString();
-	script(src='/js/calendar.js')
+	script(src='//code.jquery.com/jquery.js')
+	script(src='https://rawgit.com/eAdnan007/jquery-countdown/master/jquery.countdown.min.js')
+	script(src='/js/progress-bar.js')
 	script(src='/js/next-step.js')
 

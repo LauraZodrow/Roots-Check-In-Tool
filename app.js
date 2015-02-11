@@ -22,6 +22,8 @@ app.post('/auth/getProfile', googleController.getProfile);
 app.get('/next-step/:id', indexController.nextStep);
 // Calendar
 app.get('/calendar', indexController.calendar);
+// Scan Input
+app.get('/scan-input', indexController.scanInput);
 
 
 //API Routes

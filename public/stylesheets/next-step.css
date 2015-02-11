@@ -1,0 +1,34 @@
+.countDown {
+	max-width: 90%;
+	margin: auto;
+}
+
+#name {
+	text-align: center;
+	margin: auto;
+	padding-top: 1%;
+	padding-bottom: 2%;
+}
+
+#event {
+	text-align: center;
+	margin: auto;
+	padding-bottom: 5%;
+}
+
+.scan-button,
+.scan-button a {
+	text-align: center;
+	margin: auto;
+	margin-top: 5%;
+}
+
+.eventImageContainer,
+.eventTextContainer {
+	text-align: center;
+	margin: auto;
+}
+
+.locationImage {
+	display: block;
+}
