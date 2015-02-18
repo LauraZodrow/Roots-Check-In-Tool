@@ -4,14 +4,15 @@ var userSchema = mongoose.Schema ({
 	googleId: String,
 	name: String,
 	email: String,
+	image: String,
 	access_token: String,
 	// calendar_id: String
 	calendar: [{
-		date: String,
 		eventId: String,
 		location: String,
 		creator: String,
 		start: String,
+		end: String,
 		description: String
 	}]
 });

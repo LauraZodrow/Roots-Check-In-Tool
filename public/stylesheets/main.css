@@ -7,28 +7,42 @@
 	text-align: center;
 	margin: auto;
 	padding-top: 1%;
-	padding-bottom: 2%;
+	padding-bottom: 5%;
 }
 
 #event {
 	text-align: center;
 	margin: auto;
-	padding-bottom: 5%;
+	padding-top: 5%;
+	padding-bottom: 4%;
 }
 
-.scan-button,
-.scan-button a {
+.scan-button {
 	text-align: center;
 	margin: auto;
 	margin-top: 5%;
+}
+
+button {
+	padding: 1.5% 7% 1.5% 7%;
 }
 
 .eventImageContainer,
 .eventTextContainer {
 	text-align: center;
 	margin: auto;
+	padding-top: 5%;
+}
+
+.eventTextContainer {
+	padding-top: 0%;
+	padding-bottom: 5%;
 }
 
 .locationImage {
 	display: block;
+}
+
+.timer {
+	display: none;
 }
