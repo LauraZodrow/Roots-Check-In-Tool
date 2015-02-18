@@ -38,8 +38,10 @@ function getCalendar(userData){
 
         var currentTime = moment().format()
 
+        //loop through all events in user's google calendar
         var events = _.map(response.items, function(event){
 
+          //return events in this format
           return {
               eventId: event.id,
               location: event.location,
@@ -52,14 +54,14 @@ function getCalendar(userData){
 
         userData.calendar = events;
 
+       
+        console.log(events)
+
         var dataString = JSON.stringify(userData);
 
-        console.log(dataString)
+        // console.log(dataString)
 
-        // $.post('api/saveUser', dataString, function(result){
-        //   console.log('responseData', result);
-        // });
-
+        //send user data with calendar events to backend, and save to database
         $.ajax ({
           type: "POST",
           url: 'api/saveUser',
@@ -69,7 +71,8 @@ function getCalendar(userData){
             console.log(results)
           }
         });
-
+        
+        //loop through all events to find one that is 10 minutes away
         var nextEvent = _.find(response.items, function(event){
           var a = moment(currentTime);
           var b = moment(event.start.dateTime);
@@ -77,11 +80,17 @@ function getCalendar(userData){
           return (difference <= 10 && difference > 0)
         });
 
+        //if one is found show location, teacher, and activity. else eventually show grove calendar
         if (nextEvent) {
           $('#event').prepend($('<h3>' + nextEvent.location + '</h3>'));
 
           renderProgressBar(nextEvent.start);
+
           renderLocationImage(nextEvent.location, nextEvent.creator);
+
+        } 
+        else {
+          $('#groveCalendar').append($('<h3>Grove Calendar Will Go Here</h3>'));
         }
   });
 }
@@ -93,6 +102,7 @@ function signinCallback(authResult) {
     // Hide the sign-in button now that the user is authorized, for example:
     document.getElementById('signinButton').setAttribute('style', 'display: none');
 
+    //make call to google profile for users account information
     gapi.client.request('https://www.googleapis.com/plus/v1/people/me?fields=name(familyName%2Cformatted%2CgivenName)%2CdisplayName%2Cemails%2Fvalue%2Cimage%2Furl%2Cid').execute(function(response) {
 
       var signInData = {
@@ -102,6 +112,7 @@ function signinCallback(authResult) {
         image: response.image.url
       }
 
+      //get calendar events on signIn and send events/user to database in function above
       getCalendar(signInData)
    });
 

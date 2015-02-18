@@ -7,10 +7,11 @@ var bodyParser = require('body-parser');
 var googleController = {
 	
 	saveUser: function(req, res){
-		var data = req.body;
-		console.log('data', data);
+		var parser = bodyParser.json(req.body);
+		console.log(req.body);
+		
 		// console.log('Data keys', Object.keys(data))
-		console.log('Calendar data', JSON.parse(data));
+		// console.log('Calendar data', JSON.parse(data));
 		User.findOne({ googleId: data.id}, function(err, user) {
 			// console.log('user', user);
 			// console.log('data', data);

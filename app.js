@@ -16,22 +16,19 @@ var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
 mongoose.connect(mongoDB_URL + '/rootsApp');
 
 app.get('/', indexController.index);
-// app.get('/auth', indexController.auth);
-// app.post('/auth/getProfile', googleController.getProfile);
 
 
 // Next Step
-app.get('/next-step/:id', indexController.nextStep);
-// Calendar
-app.get('/calendar', indexController.calendar);
+// app.get('/next-step/:id', indexController.nextStep);
 // Scan Input
 app.get('/scan-input', indexController.scanInput);
+app.get('/pullout-locations', indexController.pullOutLocations);
+app.get('/lost-kids', indexController.lostKids);
 // Student Full schedule 
 app.get('/student-full-schedule', indexController.studentFullSchedule);
 
 
 //API Routes
-// app.get('/api/getCalendar/:id', googleController.getCalendar);
 app.post('/api/saveUser', googleController.saveUser);
 
 

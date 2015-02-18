@@ -46,3 +46,11 @@ button {
 .timer {
 	display: none;
 }
+
+#groveCalendar {
+	text-align: center;
+	margin: auto;
+}
+
+/*pullout-locations styles*/
+
