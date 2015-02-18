@@ -55,7 +55,7 @@ function getCalendar(userData){
         userData.calendar = events;
 
        
-        console.log(events)
+        // console.log(events)
 
         var dataString = JSON.stringify(userData);
 
@@ -68,7 +68,7 @@ function getCalendar(userData){
           data: dataString,
           dataType: 'JSON',
           success: function(err, results){
-            console.log(results)
+            console.log('results', results)
           }
         });
         

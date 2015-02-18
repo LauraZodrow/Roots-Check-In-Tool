@@ -10,7 +10,7 @@ app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded());
 
 var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
 mongoose.connect(mongoDB_URL + '/rootsApp');
@@ -30,7 +30,6 @@ app.get('/student-full-schedule', indexController.studentFullSchedule);
 
 //API Routes
 app.post('/api/saveUser', googleController.saveUser);
-
 
 
 var server = app.listen(7060, function() {

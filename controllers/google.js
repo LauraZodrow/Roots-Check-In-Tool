@@ -7,8 +7,7 @@ var bodyParser = require('body-parser');
 var googleController = {
 	
 	saveUser: function(req, res){
-		var parser = bodyParser.json(req.body);
-		console.log(req.body);
+		var data = req.body
 		
 		// console.log('Data keys', Object.keys(data))
 		// console.log('Calendar data', JSON.parse(data));
