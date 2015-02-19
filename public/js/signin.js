@@ -34,6 +34,7 @@ renderLocationImage = function(eventLocation, eventCreator) {
 
 
 function getCalendar(userData){
+  //get users google calendar events
   gapi.client.request('https://www.googleapis.com/calendar/v3/calendars/' + userData.email + '/events/').execute(function(response) {
 
         var currentTime = moment().format()
@@ -52,6 +53,7 @@ function getCalendar(userData){
             }
         });
 
+        //push all events objects in users calendar
         userData.calendar = events;
 
 
@@ -79,10 +81,11 @@ function getCalendar(userData){
 
         //if one is found show location, teacher, and activity. else eventually show grove calendar
         if (nextEvent) {
+
           $('#event').prepend($('<h3>' + nextEvent.location + '</h3>'));
-
+          //pass event start time to renderProgressBar
           renderProgressBar(nextEvent.start);
-
+          //pass event location and creator to render correct image
           renderLocationImage(nextEvent.location, nextEvent.creator);
 
         } 
@@ -109,8 +112,8 @@ function signinCallback(authResult) {
         image: response.image.url
       }
 
+      //add google id to scan href/link. that way when scan returns scanned_data we have the users id
       $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/'+response.id)
-      // location = '/next-step/' + response.id
 
       //get calendar events on signIn and send events/user to database in function above
       getCalendar(signInData);

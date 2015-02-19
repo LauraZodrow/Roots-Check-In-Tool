@@ -15,16 +15,16 @@ var indexController = {
 
 		if (scanned_data) {
 			console.log('Scanned data:', scanned_data);
-			console.log('googleId', googleId);
+
 			var currentTime = new Date();
 			console.log('Current time:', currentTime);
 
 			User.findOne({googleId: googleId}, function(err, user) {
-				console.log ('Arguments of findOne', arguments)
 				if (err) {
 					console.error(err);
 				}
 				else {
+					//find event in collection that is between event start time minus 5 min and event end time
 					var currentEvent = _.find(user.calendar, function(event) {
 						var start = moment(event.start).subtract(5, 'minutes');
 						return moment(currentTime).isBetween(start, event.end);
@@ -59,17 +59,6 @@ var indexController = {
 		else {
 			res.render('index')
 		}
-	},
-
-	// nextStep: function(req, res) {
-	// 	res.render('next-step', {
-	// 		id: req.params.id.toString(),
-	// 		user:  req.user
-	// 	});
-	// },
-
-	scanInput: function(req, res){
-		res.render('scan-input');
 	},
 
 	pullOutLocations: function(req, res){

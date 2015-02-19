@@ -19,12 +19,8 @@ mongoose.connect(mongoDB_URL + '/rootsApp');
 
 app.get('/', indexController.index);
 app.get('/:id', indexController.saveScan)
-// app.get('/:id', indexController.nextStep);
 
-// Next Step
-// app.get('/next-step/:id', indexController.nextStep);
-// Scan Input
-app.get('/scan-input', indexController.scanInput);
+
 app.get('/pullout-locations', indexController.pullOutLocations);
 app.get('/lost-kids', indexController.lostKids);
 // Student Full schedule 
@@ -33,7 +29,6 @@ app.get('/student-full-schedule', indexController.studentFullSchedule);
 
 //API Routes
 app.post('/api/saveUser', googleController.saveUser);
-// app.get('/api/getProfileImage', apiController.getProfileImage);
 
 
 var server = app.listen(7060, function() {
