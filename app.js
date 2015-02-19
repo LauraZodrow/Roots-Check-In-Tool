@@ -4,19 +4,22 @@ var mongoose = require('mongoose');
 
 var indexController = require('./controllers/index.js');
 var googleController = require('./controllers/google.js');
+var apiController = require('./controllers/apiController.js');
 
 var app = express();
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: false}));
 
 var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
 mongoose.connect(mongoDB_URL + '/rootsApp');
 
-app.get('/', indexController.index);
 
+app.get('/', indexController.index);
+app.get('/:id', indexController.saveScan)
+// app.get('/:id', indexController.nextStep);
 
 // Next Step
 // app.get('/next-step/:id', indexController.nextStep);
@@ -30,6 +33,7 @@ app.get('/student-full-schedule', indexController.studentFullSchedule);
 
 //API Routes
 app.post('/api/saveUser', googleController.saveUser);
+// app.get('/api/getProfileImage', apiController.getProfileImage);
 
 
 var server = app.listen(7060, function() {

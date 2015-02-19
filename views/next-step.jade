@@ -1,0 +1,33 @@
+extends layout
+
+block content
+	.container
+		#name
+		.progress.countDown
+			.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
+		.timer
+		#event
+		#groveCalendar
+		.eventImageContainer.row
+			.locationImage.col-xs-4.col-md-4
+			.activityImage.col-xs-4.col-md-4
+			.creatorImage.col-xs-4.col-md-4
+		.eventTextContainer.row
+			.locationText.col-xs-4.col-md-4
+			.activityText.col-xs-4.col-md-4
+			.creatorText.col-xs-4.col-md-4
+		.scan-button
+			button
+				a(href='scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/next-step/#{googleId}') Scan
+
+block scripts
+	script(src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js")
+	script.
+		//- var googleId = #{googleId}
+	script(src='//code.jquery.com/jquery.js')
+	script(src='https://rawgit.com/eAdnan007/jquery-countdown/master/jquery.countdown.min.js')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.1.0/lodash.min.js')
+	script(src='/js/progress-bar.js')
+	script(src='/js/nextStep.js')
+	script(src='/js/scan.js')
+

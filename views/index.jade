@@ -37,7 +37,7 @@ block content
 			.creatorText.col-xs-4.col-md-4
 		.scan-button
 			button
-				a(href='scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/next-step/#{googleId}') Scan
+				a#scan-button Scan
 
 block scripts
 	script(src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js")
@@ -45,5 +45,4 @@ block scripts
 	script(src='https://rawgit.com/eAdnan007/jquery-countdown/master/jquery.countdown.min.js')
 	script(src='/js/progress-bar.js')
 	script(src='/js/scan.js')
-	script(src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.1.0/lodash.min.js')
 	script(src='/js/signin.js')

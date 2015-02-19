@@ -54,19 +54,16 @@ function getCalendar(userData){
 
         userData.calendar = events;
 
-       
-        // console.log(events)
 
         var dataString = JSON.stringify(userData);
-
-        // console.log(dataString)
+        console.log('userData', userData)
 
         //send user data with calendar events to backend, and save to database
         $.ajax ({
           type: "POST",
           url: 'api/saveUser',
           data: dataString,
-          dataType: 'JSON',
+          contentType: 'application/json',
           success: function(err, results){
             console.log('results', results)
           }
@@ -112,10 +109,12 @@ function signinCallback(authResult) {
         image: response.image.url
       }
 
-      //get calendar events on signIn and send events/user to database in function above
-      getCalendar(signInData)
-   });
+      $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/'+response.id)
+      // location = '/next-step/' + response.id
 
+      //get calendar events on signIn and send events/user to database in function above
+      getCalendar(signInData);
+  });
   } else {
     // Update the app to reflect a signed out user
     // Possible error values:

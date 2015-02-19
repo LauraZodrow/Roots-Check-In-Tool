@@ -8,7 +8,7 @@ var googleController = {
 	
 	saveUser: function(req, res){
 		var data = req.body
-		
+		console.log('data', req.body);
 		// console.log('Data keys', Object.keys(data))
 		// console.log('Calendar data', JSON.parse(data));
 		User.findOne({ googleId: data.id}, function(err, user) {
@@ -20,7 +20,7 @@ var googleController = {
 					googleId: data.id,
 					name: data.name,
 					image: data.image,
-					calendar: []
+					calendar: data.calendar
 				}, function(err, user) {
 					if (err) {
 						console.error(err);
