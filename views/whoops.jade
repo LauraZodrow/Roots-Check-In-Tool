@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	.container
+			#name
+			.progress.countDown
+				.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
+			.timer
+			#event
+			#groveCalendar
+			.eventImageContainer.row
+				.locationImage.col-xs-4.col-md-4
+				.activityImage.col-xs-4.col-md-4
+				.creatorImage.col-xs-4.col-md-4
+			.eventTextContainer.row
+				.locationText.col-xs-4.col-md-4
+				.activityText.col-xs-4.col-md-4
+				.creatorText.col-xs-4.col-md-4
+			.scan-button
+				button
+					a#scan-button Scan
+
+block scripts
+	script(src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js")
+	script(src='//code.jquery.com/jquery.js')
+	script(src='https://rawgit.com/eAdnan007/jquery-countdown/master/jquery.countdown.min.js')
+	script(src='/js/signin.js')

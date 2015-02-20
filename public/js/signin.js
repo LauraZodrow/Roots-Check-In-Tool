@@ -3,7 +3,7 @@ renderProgressBar = function(eventStart){
 
   $('.timer').countdown({  
     start_time: currentTime, //Time when the progress bar is at 0%
-      end_time: eventStart, //Time Progress bar is at 100% and timer runs out
+      end_time: eventStart.dateTime, //Time Progress bar is at 100% and timer runs out
       progress: $('.progress-bar'), //There dom element which should display the progressbar.
       onComplete: function() {
             $('.timer').show();

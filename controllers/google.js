@@ -8,12 +8,9 @@ var googleController = {
 	
 	saveUser: function(req, res){
 		var data = req.body
-		console.log('data', req.body);
-		// console.log('Data keys', Object.keys(data))
-		// console.log('Calendar data', JSON.parse(data));
+
 		User.findOne({ googleId: data.id}, function(err, user) {
-			// console.log('user', user);
-			// console.log('data', data);
+
 			if (!user) {
 				User.create({
 					email: data.email,

@@ -5,16 +5,15 @@ var scanSchema = mongoose.Schema ({
 	email: String,
 	googleId: String,
 	time: Date,
-	location: String,
-	event: {
-		date: String,
+	scannedLocation: String,
+	event: [{
 		eventId: String,
 		location: String,
 		creator: String,
 		start: String,
 		end: String,
 		description: String
-	}
+	}]
 });
 
 module.exports = mongoose.model('scan', scanSchema);

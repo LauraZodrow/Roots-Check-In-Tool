@@ -10,18 +10,29 @@ var app = express();
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+//Socket.io requirements 
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
+
+// io.on('connection', function(socket){
+// 	console.log('user connected');
+// 	socket.emit('alert', 'hello from server!')
+// });
 
 var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
 mongoose.connect(mongoDB_URL + '/rootsApp');
 
 
 app.get('/', indexController.index);
-app.get('/:id', indexController.saveScan)
+app.get('/:id', indexController.saveScan);
 
 
-app.get('/pullout-locations', indexController.pullOutLocations);
+app.get('/instructor', indexController.instructor);
+app.get('/success', indexController.success);
+
 app.get('/lost-kids', indexController.lostKids);
 // Student Full schedule 
 app.get('/student-full-schedule', indexController.studentFullSchedule);
