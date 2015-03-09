@@ -30,13 +30,14 @@ button {
 .eventImageContainer,
 .eventTextContainer {
 	text-align: center;
-	margin: auto;
-	padding-top: 5%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 3%;
 }
 
 .eventTextContainer {
-	padding-top: 0%;
-	padding-bottom: 5%;
+	margin-top: 0%;
+	margin-bottom: 3%;
 }
 
 .locationImage {
@@ -52,5 +53,16 @@ button {
 	margin: auto;
 }
 
-/*pullout-locations styles*/
+/*whoops styles*/
+
+.whoopsContainer {
+	border: #FF0000 solid 2px;
+}
+
+.tryAgain {
+	text-align: center;
+	margin: auto;
+	padding-top: 5%;
+	padding-bottom: 4%;
+}
 

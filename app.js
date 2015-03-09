@@ -13,35 +13,47 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-//Socket.io requirements 
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
-
-// io.on('connection', function(socket){
-// 	console.log('user connected');
-// 	socket.emit('alert', 'hello from server!')
-// });
-
+// SETUP MONGO
 var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
 mongoose.connect(mongoDB_URL + '/rootsApp');
 
+// SETUP SOCKETS
+var http = require('http').Server(app);
+var io = require('socket.io').listen(http);
 
-app.get('/', indexController.index);
-app.get('/:id', indexController.saveScan);
+io.on('connection', function(socket){
+	console.log('Someone connected!');
+});
 
+// ROUTES
+
+app.get('/', function(req, res) {
+	indexController.index(req, res, io);
+});
+app.get('/scanredirect/:id', function(req, res) {
+	indexController.saveScan(req, res, io);
+});
 
 app.get('/instructor', indexController.instructor);
 app.get('/success', indexController.success);
+app.get('/whoops', indexController.whoops);
 
-app.get('/lost-kids', indexController.lostKids);
+app.get('/student-tracker', function(req, res) {
+	indexController.studentTracker(req, res, io);
+});
 // Student Full schedule 
 app.get('/student-full-schedule', indexController.studentFullSchedule);
 
 
 //API Routes
-app.post('/api/saveUser', googleController.saveUser);
+app.post('/api/user', googleController.saveUser);
+app.get('/api/user', apiController.getUsers);
 
 
-var server = app.listen(7060, function() {
+// io.listen(app);
+
+var port = process.env.PORT || 7060;
+
+var server = http.listen(port, function() {
 	console.log('Express server listening on port ' + server.address().port);
 });

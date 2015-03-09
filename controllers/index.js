@@ -1,15 +1,15 @@
 var User = require('../models/user.js');
-var Scan = require('../models/Scan.js');
+var Scan = require('../models/scan.js');
 var _ = require('lodash');
 var moment = require('moment');
-// var io = require('socket.io')();
+
 
 var indexController = {
-	index: function(req, res) {
+	index: function(req, res, io) {
 		res.render('index')
 	},
 
-	saveScan: function(req, res) {
+	saveScan: function(req, res, io) {
 
 		var scanned_data = req.query.scanned_data;
 		var googleId = req.params.id;
@@ -36,6 +36,7 @@ var indexController = {
 						googleId: user.googleId,
 						name: user.name,
 						email: user.email,
+						image: user.image,
 						time: currentTime,
 						scannedLocation: scanned_data,
 						event: currentEvent
@@ -46,12 +47,13 @@ var indexController = {
 							console.error(err);
 						}
 						else {
-							if (scan.scannedLocation === scan.event[0].location){
+							io.emit('SCAN!', scan);
+							console.log('SCAN!', scan);
+							if (scan.event && scan.scannedLocation === scan.event[0].location) {
 								console.log('your in correct location!');
-								// io.sockets.emit('an event sent to all connected clients');
 								res.redirect('/success');
 							} else {
-								console.log('next step goes here')
+								res.redirect('/whoops')
 							}
 							// Here put logic for what to do if the user is in the right place at the right time or not
 							// Emit an event using sockets that someone has logged in. 
@@ -65,6 +67,7 @@ var indexController = {
 			})
 		}
 		else {
+			// TODO: Create a redirect page for failed scans
 			res.render('index')
 		}
 	},
@@ -77,10 +80,13 @@ var indexController = {
 		res.render('success')
 	},
 
-	lostKids: function(req, res) {
-		console.log('hello users');
-		// var kidsPics = _map
-		res.render('lost-kids');
+	whoops: function(req, res){
+		res.render('whoops')
+	},
+
+	studentTracker: function(req, res) {
+
+		res.render('student-tracker');
 	},
 
 	studentFullSchedule: function(req, res){

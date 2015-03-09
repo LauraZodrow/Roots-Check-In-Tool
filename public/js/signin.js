@@ -63,7 +63,7 @@ function getCalendar(userData){
         //send user data with calendar events to backend, and save to database
         $.ajax ({
           type: "POST",
-          url: 'api/saveUser',
+          url: 'api/user',
           data: dataString,
           contentType: 'application/json',
           success: function(err, results){
@@ -112,11 +112,13 @@ function signinCallback(authResult) {
         image: response.image.url
       }
 
+      $('#name').append('<h2>' + response.displayName + '\'s Next Step</h2>')
       //add google id to scan href/link. that way when scan returns scanned_data we have the users id
-      $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/'+response.id)
+      $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/scanredirect/'+response.id)
 
       //get calendar events on signIn and send events/user to database in function above
       getCalendar(signInData);
+
   });
   } else {
     // Update the app to reflect a signed out user
