@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // SETUP MONGO
-var mongoDB_URL = process.env.MONGOHQ_URL || 'mongodb://localhost'
+var mongoDB_URL = process.env.MONGOLAB_URI || 'mongodb://localhost'
 mongoose.connect(mongoDB_URL + '/rootsApp');
 
 // SETUP SOCKETS
@@ -31,12 +31,13 @@ app.get('/', function(req, res) {
 	indexController.index(req, res, io);
 });
 app.get('/scanredirect/:id', function(req, res) {
-	indexController.saveScan(req, res, io);
+	apiController.saveScan(req, res, io);
 });
 
 app.get('/instructor', indexController.instructor);
 app.get('/success', indexController.success);
 app.get('/whoops', indexController.whoops);
+app.get('/grove-calendar', indexController.groveCalendar);
 
 app.get('/student-tracker', function(req, res) {
 	indexController.studentTracker(req, res, io);
@@ -48,6 +49,9 @@ app.get('/student-full-schedule', indexController.studentFullSchedule);
 //API Routes
 app.post('/api/user', googleController.saveUser);
 app.get('/api/user', apiController.getUsers);
+app.get('/api/grove/:user_id', apiController.getGroveCalendar);
+app.put('/api/grove/:user_id', apiController.updateGroveCalendar);
+app.get('/api/grove', apiController.listGroveCalendars);
 
 
 // io.listen(app);

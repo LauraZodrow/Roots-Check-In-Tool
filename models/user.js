@@ -7,6 +7,19 @@ var userSchema = mongoose.Schema ({
 	image: String,
 	access_token: String,
 	// calendar_id: String
+	recentScan: {
+		time: String,
+		event: [{
+			eventId: String,
+			location: String,
+			start: String,
+			end: String,
+			activity: String,
+			description: String
+		}],
+		scannedLocation: String,
+		correct: Boolean
+	},
 	calendar: [{
 		eventId: String,
 		location: String,
@@ -14,6 +27,11 @@ var userSchema = mongoose.Schema ({
 		start: String,
 		end: String,
 		description: String
+	}],
+	groveCalendar: [{
+		location: String,
+		activity: String,
+		checkedIn: Boolean
 	}]
 });
 

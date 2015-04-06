@@ -66,3 +66,68 @@ button {
 	padding-bottom: 4%;
 }
 
+/*grove calendar styles*/
+.location-grove {
+	height: 200px;
+	border-right: 1px solid #000 ;
+}
+
+.location-grove-title {
+	text-align: right
+}
+
+
+/*STUDENT TRACKER STYLES*/
+.student-tracker-title {
+	margin:auto;
+	text-align: center;
+	width:100%;
+	margin-bottom:50px;
+	margin-top:50px;
+}
+
+.Lost {
+	background-color:#8BA65F;
+	width:20%;
+	text-align:center;
+	margin:7px;
+	border-radius:7px;
+	padding:7px;
+	color:#484848;
+}
+
+.Lost img {
+	border: #ED0802 solid 3px;
+	text-align:center;
+	margin:auto;
+}
+
+#WrongLocation {
+	width:100%;
+	text-align:center;
+	margin:auto;
+}
+
+.name {
+	font-size:16px;
+	font-weight: bold;
+	margin-bottom:15px;
+}
+
+.nameImageContainer {
+	margin-bottom:15px;
+}
+
+.collapse.in {
+	background-color: #fff;
+}
+
+.panel {
+	border:none;
+}
+
+@media only screen (max-width:480px) {
+	.Lost {
+		width:90%;
+	}
+}

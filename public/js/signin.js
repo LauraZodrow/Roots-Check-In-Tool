@@ -12,32 +12,91 @@ renderProgressBar = function(eventStart){
   });
 }
 
-renderLocationImage = function(eventLocation, eventCreator) {
+// Render a location image
+renderLocationImage = function(eventLocation, eventActivity, eventCreator, order) {
 
   if (eventLocation == 'Library'){
-    var libraryImg = $("<img src='/img/blue-triangle.png' width='70px'>")
-    var pencilImg = $("<i class='fa fa-pencil fa-4x'>")
+    // TODO:  add images for all locations, with keys that are the name of the location
+    var locationImages = {
+      library: '<img class="location-image" src="/img/blue-triangle.png" width="70px">'
+    };
 
-    $('.locationImage').append(libraryImg);
-    $('.locationText').append('Library');
+    // TODO: add images for all activities, with keys that are the name of the activity
+    var activityImages = {
+      pencil: '<i class="activity-image fa fa-pencil fa-4x">'
+    }
 
-    $('.activityImage').append(pencilImg);
-    $('.activityText').append('Writing');
+    $('#locationImage' + order).append(locationImages[eventLocation.toLowerCase()]);
+    $('#locationText' + order).append(eventLocation);
+
+    $('#activityImage' + order).append(activityImages[eventActivity.toLowerCase()]);
+    $('#activityText' + order).append(eventActivity);
   }
 
+  // TODO: chnage this to use the eventCreator
   if (eventCreator == 'team@rootselementary.org') {
-    $('.creatorImage').append("<img src='/img/jill-image.jpg' width='70px'>");
-    $('.creatorText').append('Jill Carty')
+    $('#creatorImage').append("<img src='/img/jill-image.jpg' width='70px'>");
+    $('#creatorText').append('Jill Carty')
   }
-
 }
 
+// Render the grove calendar. If three events need to be rendered, render the first as the "main event"
+renderGroveCalendar = function(numEvents) {
+   $.get('/api/grove/' + userData.id, function(calendar) {
+      var nextEventIndex = _.findIndex(calendar, function(event) {
+        return !event.checkedIn;
+      });
+      // If there's not a next event, then the student has finished their calendar, in which case uncheck all events and start at the top
+      if (!nextEventIndex) {
+        nextEventIndex = 0;
+        calendar = _.map(calendar, function(e) {
+          e.checkedIn = false;
+          return e;
+        });
+
+        // Save the new calendar
+        $.ajax('/api/grove/' + userData.id, {
+          method: 'PUT',
+          data: JSON.stringify({calendar: calendar}),
+          contentType: 'application/json',
+          success: function() {
+            // TODO
+          },
+          error: function(xhr, text, error) {
+            // TODO
+          }
+        });
+      }
+
+      // Get next two events
+      var nextEvent = calendar[nextEventIndex];
+      var nexterEvent = calendar[(nextEventIndex + 1) % calendar.length];
+
+      if (numEvents === 3) {
+        $('#event').append($('<h3>' + calendar[nextEventIndex].location + '</h3>'));
+        renderLocationImage(nextEvent.location, nextEvent.activity, null, 0);
+        renderLocationImage(nexterEvent.location, nexterEvent.activity, null, 1);
+
+        // Get third event
+        var nextestEvent = calendar[(nextEventIndex + 2) % calendar.length];
+        renderLocationImage(nextestEvent.location, nextestEvent.activity, null, 2)
+      } else {
+        renderLocationImage(nextEvent.location, nextEvent.activity, null, 1);
+        renderLocationImage(nexterEvent.location, nexterEvent.activity, null, 2);
+      }
+      //pass event location and widget image to render correct image
+
+      // Now render the other one / two events as coming up
+      
+      if 
+      renderNext(calendar[]);
+}
 
 function getCalendar(userData){
   //get users google calendar events
   gapi.client.request('https://www.googleapis.com/calendar/v3/calendars/' + userData.email + '/events/').execute(function(response) {
 
-        var currentTime = moment().format()
+        var currentTime = moment();
 
         //loop through all events in user's google calendar
         var events = _.map(response.items, function(event){
@@ -50,47 +109,63 @@ function getCalendar(userData){
               start: event.start.dateTime,
               end: event.end.dateTime,
               description: event.description
-            }
+            };
         });
 
         //push all events objects in users calendar
         userData.calendar = events;
 
-
-        var dataString = JSON.stringify(userData);
-        console.log('userData', userData)
-
         //send user data with calendar events to backend, and save to database
         $.ajax ({
           type: "POST",
           url: 'api/user',
-          data: dataString,
-          contentType: 'application/json',
-          success: function(err, results){
-            console.log('results', results)
-          }
+          data: JSON.stringify(userData),
+          contentType: 'application/json'
         });
         
         //loop through all events to find one that is 10 minutes away
         var nextEvent = _.find(response.items, function(event){
-          var a = moment(currentTime);
+          var a = currentTime;
           var b = moment(event.start.dateTime);
           var difference = b.diff(a, 'minutes');
           return (difference <= 10 && difference > 0)
         });
 
-        //if one is found show location, teacher, and activity. else eventually show grove calendar
-        if (nextEvent) {
+        // Check to see if there's an event currently happening that the student is late for or is checking into the app before the event is done
+        var currentEvent = _.find(events, function(event) {
+          return moment(currentTime).isBetween(event.start, event.end);
+        });
 
+        //if a current event is found, show location, teacher, and activity. 
+        if (currentEvent) {
+          $('#event').prepend($('<h3 class="current-event"> You have an event at: ' + currentEvent.location + '. Please check back later.</h3>'));
+          
+          // Render location for current event
+          // TODO: Pass in the correct activity
+          var activity = null; // Do something with nextEvent.description?
+          renderLocationImage(currentEvent.location, activity, currentEvent.creator, 0);
+
+          // Render grove calendar with two events
+          renderGroveCalendar(2);
+        } 
+        // If there's not a current event, show the next event
+        else if (nextEvent) {
           $('#event').prepend($('<h3>' + nextEvent.location + '</h3>'));
+
           //pass event start time to renderProgressBar
           renderProgressBar(nextEvent.start);
-          //pass event location and creator to render correct image
-          renderLocationImage(nextEvent.location, nextEvent.creator);
 
-        } 
+          //pass event location and creator to render correct image
+          // TODO: Pass in the correct activity
+          var activity = null; // Do something with nextEvent.description?
+          renderLocationImage(nextEvent.location, activity , nextEvent.creator, 0);
+
+          // Render the grove calendar with next two events
+          renderGroveCalendar(2);
+        }
+        // If nothing came back from the google calendar, render the next three grove calendar events
         else {
-          $('#groveCalendar').append($('<h3>Grove Calendar Will Go Here</h3>'));
+          renderGroveCalendar(3);
         }
   });
 }
@@ -114,8 +189,7 @@ function signinCallback(authResult) {
 
       $('#name').append('<h2>' + response.displayName + '\'s Next Step</h2>')
       //add google id to scan href/link. that way when scan returns scanned_data we have the users id
-      $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F4376acff.ngrok.com/scanredirect/'+response.id)
-
+      $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F646ee683.ngrok.com/scanredirect/'+response.id)
       //get calendar events on signIn and send events/user to database in function above
       getCalendar(signInData);
 

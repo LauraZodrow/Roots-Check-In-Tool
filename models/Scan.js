@@ -7,13 +7,14 @@ var scanSchema = mongoose.Schema ({
 	image: String,
 	time: Date,
 	scannedLocation: String,
+	correct: Boolean,
 	event: [{
 		eventId: String,
 		location: String,
 		creator: String,
 		start: String,
 		end: String,
-		description: String
+		activity: String
 	}]
 });
 
