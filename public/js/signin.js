@@ -15,23 +15,27 @@ renderProgressBar = function(eventStart){
 // Render a location image
 renderLocationImage = function(eventLocation, eventActivity, eventCreator, order) {
 
-  if (eventLocation == 'Library'){
-    // TODO:  add images for all locations, with keys that are the name of the location
-    var locationImages = {
-      library: '<img class="location-image" src="/img/blue-triangle.png" width="70px">'
-    };
+  console.log('Rendering location image:', eventLocation.toLowerCase(), eventActivity.toLowerCase(), order)
+ 
+  // TODO:  add images for all locations, with keys that are the name of the location
+  var locationImages = {
+    library: '<img class="location-image" src="/img/blue-triangle.png" width="70px">',
+    'maker space': '<i class="fa fa-car fa-4x"></i>',
+    tablets: '<i class="fa fa-tablet fa-4x"></i>'
+  };
 
-    // TODO: add images for all activities, with keys that are the name of the activity
-    var activityImages = {
-      pencil: '<i class="activity-image fa fa-pencil fa-4x">'
-    }
+  // TODO: add images for all activities, with keys that are the name of the activity
+  var activityImages = {
+    'blocks': '<i class="fa fa-star fa-4x"></i>',
+    'level reading': '<i class="activity-image fa fa-pencil fa-4x"></i>',
+    razkids: '<i class="fa fa-star fa-4x"></i>'
+  };
 
-    $('#locationImage' + order).append(locationImages[eventLocation.toLowerCase()]);
-    $('#locationText' + order).append(eventLocation);
+  $('#locationImage' + order).append(locationImages[eventLocation.toLowerCase()]);
+  $('#locationText' + order).append(eventLocation);
 
-    $('#activityImage' + order).append(activityImages[eventActivity.toLowerCase()]);
-    $('#activityText' + order).append(eventActivity);
-  }
+  $('#activityImage' + order).append(activityImages[eventActivity.toLowerCase()]);
+  $('#activityText' + order).append(eventActivity);
 
   // TODO: chnage this to use the eventCreator
   if (eventCreator == 'team@rootselementary.org') {
@@ -41,7 +45,7 @@ renderLocationImage = function(eventLocation, eventActivity, eventCreator, order
 }
 
 // Render the grove calendar. If three events need to be rendered, render the first as the "main event"
-renderGroveCalendar = function(numEvents) {
+renderGroveCalendar = function(numEvents, userData) {
    $.get('/api/grove/' + userData.id, function(calendar) {
       var nextEventIndex = _.findIndex(calendar, function(event) {
         return !event.checkedIn;
@@ -73,7 +77,7 @@ renderGroveCalendar = function(numEvents) {
       var nexterEvent = calendar[(nextEventIndex + 1) % calendar.length];
 
       if (numEvents === 3) {
-        $('#event').append($('<h3>' + calendar[nextEventIndex].location + '</h3>'));
+        $('#event').append($('<h3>' + calendar[nextEventIndex].location + ': ' + calendar[nextEventIndex].activity + '</h3>'));
         renderLocationImage(nextEvent.location, nextEvent.activity, null, 0);
         renderLocationImage(nexterEvent.location, nexterEvent.activity, null, 1);
 
@@ -84,12 +88,7 @@ renderGroveCalendar = function(numEvents) {
         renderLocationImage(nextEvent.location, nextEvent.activity, null, 1);
         renderLocationImage(nexterEvent.location, nexterEvent.activity, null, 2);
       }
-      //pass event location and widget image to render correct image
-
-      // Now render the other one / two events as coming up
-      
-      if 
-      renderNext(calendar[]);
+  });
 }
 
 function getCalendar(userData){
@@ -146,26 +145,27 @@ function getCalendar(userData){
           renderLocationImage(currentEvent.location, activity, currentEvent.creator, 0);
 
           // Render grove calendar with two events
-          renderGroveCalendar(2);
+          renderGroveCalendar(2, userData);
         } 
         // If there's not a current event, show the next event
         else if (nextEvent) {
-          $('#event').prepend($('<h3>' + nextEvent.location + '</h3>'));
+          //pass event location and creator to render correct image
+          // TODO: Pass in the correct activity
+          var activity = null; // Do something with nextEvent.description?
+
+          $('#event').prepend($('<h3>' + nextEvent.location + ': ' + activity + '</h3>'));
 
           //pass event start time to renderProgressBar
           renderProgressBar(nextEvent.start);
 
-          //pass event location and creator to render correct image
-          // TODO: Pass in the correct activity
-          var activity = null; // Do something with nextEvent.description?
           renderLocationImage(nextEvent.location, activity , nextEvent.creator, 0);
 
           // Render the grove calendar with next two events
-          renderGroveCalendar(2);
+          renderGroveCalendar(2, userData);
         }
         // If nothing came back from the google calendar, render the next three grove calendar events
         else {
-          renderGroveCalendar(3);
+          renderGroveCalendar(3, userData);
         }
   });
 }

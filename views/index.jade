@@ -26,15 +26,30 @@ block content
 			.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
 		.timer
 		#event
-		#groveCalendar
 		.eventImageContainer.row
-			.locationImage.col-xs-4.col-md-4
-			.activityImage.col-xs-4.col-md-4
-			.creatorImage.col-xs-4.col-md-4
+			#locationImage0.locationImage.col-xs-4.col-md-4
+			#activityImage0.activityImage.col-xs-4.col-md-4
+			#creatorImage.creatorImage.col-xs-4.col-md-4
 		.eventTextContainer.row
-			.locationText.col-xs-4.col-md-4
-			.activityText.col-xs-4.col-md-4
-			.creatorText.col-xs-4.col-md-4
+			#locationText0.locationText.col-xs-4.col-md-4
+			#activityText0.activityText.col-xs-4.col-md-4
+			#creatorText.creatorText.col-xs-4.col-md-4
+		table#groveCalendar.table
+			tbody
+				tr
+					td
+						#locationImage1
+						#locationText1
+					td
+						#activytImage1
+						#activityText1
+				tr
+					td
+						#locationImage2
+						#locationText2
+					td
+						#activityImage2
+						#activityText2
 		.scan-button
 			button
 				a#scan-button Scan

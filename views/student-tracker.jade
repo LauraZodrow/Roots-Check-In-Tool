@@ -1,14 +1,14 @@
 extends layout
 
 block content
-	h3.student-tracker-title Student Tracker
+	h3.student-tracker-title Who's Lost
 	
 	.container
 		#accordion.panel-group(role='tablist', aria-multiselectable='true')
 			.panel.panel-default.title-panel
 				#headingOne.panel-heading(role='tab')
 					a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
-						h4 Wrong Location
+						h4 Lost
 			#collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
 				.panel-body
 					#WrongLocation

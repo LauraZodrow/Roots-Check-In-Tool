@@ -4,7 +4,6 @@ var studentsArray = [];
 var StudentLocationDisplay = function(student) {
 	this.data = _.pick(student, ['_id', 'email','name','image','googleId']);
 	
-	console.log('student', student);
 	// Create the DOM element representing the student
 	var display = $('<div class="studentLocationDisplay" id='+student.googleId+'</div>');
 	display.append('<div class="nameImageContainer"><div class="name">' + student.name + '</div><div><img class="studentImage" src="' +student.image+'"></div></div>');
@@ -21,7 +20,7 @@ var StudentLocationDisplay = function(student) {
 
 		// If google event, check against event end
 		if (event && event.end && moment(event.end).add(TRANSITION_LENGTH, 'minutes').isAfter(moment())) {
-				recent = true;
+			recent = true;
 		}
 		// If grove calendar, check against length of events
 		else if (event && !event.end && moment().add(TRANSITION_LENGTH + EVENT_LENGTH, 'minutes').isAfter(moment())) {
@@ -39,6 +38,12 @@ var StudentLocationDisplay = function(student) {
 			this.render('Lost');
 		}
 	} 
+	// If there is a recent scan
+	else if (scan) {
+		this.status = 'Wrong Location';
+		this.currentLocation = 'Lost';
+		this.render('Lost');
+	} 
 	// If there is no recent scan at all, student is lost, create a dummy recent scan
 	else {
 		this.status = 'Lost';
@@ -50,14 +55,18 @@ var StudentLocationDisplay = function(student) {
 
 // Updates student display based on most recent scan / event 
 StudentLocationDisplay.prototype.updateDisplay = function() {
-	console.log('Context at update:', this);
 
 	if (this.status === 'Found') {
 		this.el.find('.studentInfoContainer').empty();
 	}
-	else {
+	// If the student is in the wrong location, display the scan information
+	else if (this.status === 'Wrong Location') {
 		var time = this.recentScan ? moment(this.recentScan.time).fromNow() : '';
-		this.el.find('.studentInfoContainer').empty().append('<p class="last-scan-info">Last scanned into: ' + this.currentLocation + ' ' + time + '</p>');
+		this.el.find('.studentInfoContainer').empty().append('<p class="last-scan-info">' + this.currentLocation + time + '</p><p>Should be: <span class="correct-location-info' + this.recentScan.event[0].location + '</span></p>');
+	}
+	// If the student has not scanned in recently, do not display the last scan information
+	else {
+		this.el.find('.studentInfoContainer').empty();
 	}
 };
 
@@ -97,14 +106,10 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		}
 		this.transitionTimeout = window.setTimeout(this.moveMe, difference);
 	}
-	// If the scan does not match the location, the student is in the wrong location
-	else if (scan) {
-		this.status = 'Wrong Location';
-		this.el.removeClass('Found').addClass('Lost');
-	}
-	// If not triggered by a scan, move student to lost
+	// If the scan does not match the location or if there is no scan, the student is lost
 	else {
 		this.status = 'Lost';
+		this.el.removeClass('Found').addClass('Lost');
 	}
 	// Optional logic to change this.el based on status
 	this.render();
@@ -116,7 +121,7 @@ StudentLocationDisplay.prototype.render = function() {
 	if (this.status === 'Found') {
 		location = this.currentLocation
 	} else {
-		location = this.status;
+		location = 'Lost';
 	}
 
 	var locationId = location.split(' ').join('');
