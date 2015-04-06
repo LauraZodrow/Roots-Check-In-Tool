@@ -1,8 +1,3 @@
-var User = require('../models/user.js');
-var Scan = require('../models/scan.js');
-var _ = require('lodash');
-var moment = require('moment');
-
 var indexController = {
 	index: function(req, res, io) {
 		res.render('index')
