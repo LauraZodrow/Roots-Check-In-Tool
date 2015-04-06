@@ -5,8 +5,12 @@ var StudentLocationDisplay = function(student) {
 	this.data = _.pick(student, ['_id', 'email','name','image','googleId']);
 	
 	// Create the DOM element representing the student
-	var display = $('<div class="studentLocationDisplay" id='+student.googleId+'</div>');
-	display.append('<div class="nameImageContainer"><div class="name">' + student.name + '</div><div><img class="studentImage" src="' +student.image+'"></div></div>');
+	var display = $('<div class="studentLocationDisplay" id="'+student.googleId+'"></div>');
+	var container = $('<div class="nameImageContainer"></div>');
+	container
+		.append('<div class="name">' + student.name + '</div>')
+		.append('<div><img class="studentImage" src="' +student.image+'"></div>');
+	display.append(container);
 	display.append('<div class="studentInfoContainer"></div>')
 	this.el = display;
 
@@ -19,15 +23,15 @@ var StudentLocationDisplay = function(student) {
 		var event = scan.event ? scan.event[0] : undefined;
 
 		// If google event, check against event end
-		if (event && event.end && moment(event.end).add(TRANSITION_LENGTH, 'minutes').isAfter(moment())) {
+		if (event && event.end && moment(event.end).add(TRANSITION_LENGTH, 'ms').isAfter(moment())) {
 			recent = true;
 		}
 		// If grove calendar, check against length of events
-		else if (event && !event.end && moment().add(TRANSITION_LENGTH + EVENT_LENGTH, 'minutes').isAfter(moment())) {
+		else if (event && !event.end && moment(scan.time).add(TRANSITION_LENGTH + EVENT_LENGTH, 'ms').isAfter(moment())) {
 			recent = true;
 		}
 
-		// If the scan is recent and the scan is correct, move the student based on the scan
+		// If the scan is recent
 		if (recent) {
 			this.moveMe(scan);
 		} 
@@ -38,13 +42,7 @@ var StudentLocationDisplay = function(student) {
 			this.render('Lost');
 		}
 	} 
-	// If there is a recent scan
-	else if (scan) {
-		this.status = 'Wrong Location';
-		this.currentLocation = 'Lost';
-		this.render('Lost');
-	} 
-	// If there is no recent scan at all, student is lost, create a dummy recent scan
+	// If there is no recent scan at all, student is lost
 	else {
 		this.status = 'Lost';
 		this.currentLocation = 'Lost';
@@ -58,14 +56,17 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 	if (this.status === 'Found') {
 		this.el.find('.studentInfoContainer').empty();
+		this.el.removeClass('Lost').addClass('Found');
 	}
 	// If the student is in the wrong location, display the scan information
 	else if (this.status === 'Wrong Location') {
+		this.el.removeClass('Found').addClass('Lost');
 		var time = this.recentScan ? moment(this.recentScan.time).fromNow() : '';
 		this.el.find('.studentInfoContainer').empty().append('<p class="last-scan-info">' + this.currentLocation + time + '</p><p>Should be: <span class="correct-location-info' + this.recentScan.event[0].location + '</span></p>');
 	}
 	// If the student has not scanned in recently, do not display the last scan information
 	else {
+		this.el.removeClass('Found').addClass('Lost');
 		this.el.find('.studentInfoContainer').empty();
 	}
 };
@@ -84,7 +85,6 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 
 	if (scan && scan.correct) {
 		this.status = 'Found';
-		this.el.removeClass('Lost').addClass('Found');
 		// Set a timeout based on the end of the event, and move the student to Lost after the event is over as a placeholder until they scan into another event
 		// To check end of event, see whether there is a start and end defined on the event (in which case it came from Google calender) or not (in which case it came from Grove, and we will use the EVENT_LENGTH and TRANSITION_LENGTH config option)
 		if (scan.event.end) {
@@ -95,7 +95,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var end_times = [];
 			// Create an array of all end times for this hour
 			for (var i =1; i<=intervals; i++) {
-				end_times.push(moment().startOf('hour').add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'minutes'));
+				end_times.push(moment().startOf('hour').add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms'));
 			}
 			// Event ends at the first end time after this check-in
 			var event_end = _.find(end_times, function(t) {
@@ -106,16 +106,22 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		}
 		this.transitionTimeout = window.setTimeout(this.moveMe, difference);
 	}
-	// If the scan does not match the location or if there is no scan, the student is lost
+	// If the scan does not match the location, the student is in the wrong location
+	else if (scan) {
+		this.status = 'Wrong Location';
+		
+	}
+	// If there is no scan
 	else {
 		this.status = 'Lost';
-		this.el.removeClass('Found').addClass('Lost');
+		this.currentLocation = 'Lost';
 	}
 	// Optional logic to change this.el based on status
 	this.render();
 }
 
 StudentLocationDisplay.prototype.render = function() {
+	console.log('Rendering:', this)
 	// render into the domnode based on where their location is
 	var location;
 	if (this.status === 'Found') {
@@ -153,6 +159,7 @@ $(function(){
 	$.get('api/user', function(students) {
 		studentsArray = _.map(students, function(student) {
 			studentInstance = new StudentLocationDisplay(student);
+			console.log('Student Instance Created:', studentInstance);
 			return studentInstance;
 		});
 	});
