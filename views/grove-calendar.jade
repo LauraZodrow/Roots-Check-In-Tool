@@ -1,0 +1,60 @@
+extends layout 
+
+block content
+	.container
+		h2 Create Student Grove Schedule
+		h3 Select Student
+		input.form-control(id="student-name-search" name="name" type="text" placeholder="Search for a student")
+		div.student-names-container(id="student-names-container") Loading...
+
+
+		h2 Student Schedule
+		h4.student-title
+			span(id="student-icon")
+			span.text-muted(id="student-name")
+
+		div.calendar-container(id="calendar-container" style={display: 'none'})
+			table.table.table-striped
+				thead
+					tr
+						th Checked In
+						th Center
+						th Activity
+						th Edit
+						th Remove
+				tbody(id="events-list")
+			div.row(id="calendar-button-container")
+				button.btn.btn-info(id="create-new-event") 
+					i.fa.fa-plus
+					|   New Event
+				button.btn.btn-success.pull-right(id="save-calendar")
+					i.fa.fa-calendar
+					|   Save Calendar
+
+		div.row
+			form.form.activity-form(id="activity-form" style={display: 'none'})
+				fieldset
+					legend(id="activity-legend")
+					div.form-group
+						label(for="activity") Activity
+						select.form-control(name="activity")
+							option(selected disabled) Choose an activity...
+							optgroup(label="Library")
+								option(value="Library#Level Reading") Level Reading
+								option(value="Library#Buddy Reading") Buddy Reading
+							optgroup(label="Maker Space")
+								option(value="Maker Space#Blocks") Blocks
+								options(value="Maker Space#Legos") Legos
+							optgroup(label="Tablets")
+								option(value="Tablets#ST Math") ST Math
+								option(value="Tablets#RazKids") RazKids
+					div.checkbox
+						label
+							input.form-control(name="checkedIn" type="checkbox")
+							|Checked in
+					button.btn.btn-danger.btn-sm(id="cancel-event-add") Done
+					button.btn.btn-success.btn-sm.pull-right(id="add-event") 
+						i.fa.fa-plus
+						span(id='add-event-text')   Add Event
+block scripts
+	script(src="/js/grove-calendar.js")
