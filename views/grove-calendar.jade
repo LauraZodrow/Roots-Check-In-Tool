@@ -1,6 +1,35 @@
 extends layout 
 
 block content
+	nav.navbar.navbar-default(role='navigation')
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle.collapsed(type='button' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					img(src="./img/roots-logo.png" style="width:190px;height:auto").navbar-brand
+
+			
+				#bs-example-navbar-collapse-1.collapse.navbar-collapse
+					ul.nav
+						ul.nav.navbar-nav.navbar-right(style="margin-top:9px")
+							li
+								a(href='/grove-calendar') Grove Calendar
+							li
+								a(href='/student-tracker') Who's Lost
+
+								//- .dropdown
+								//- a.dropdown-toggle(href='/student-tracker', data-toggle='dropdown')
+								//- 	| Who's Lost
+									//- span.caret
+									//- 	ul.dropdown-menu(role="menu")
+									//- 		li
+									//- 			a Library
+									//- 		li
+									//- 			a Maker Space
+
 	.container
 		h2 Create Student Grove Schedule
 		h3 Select Student
