@@ -189,7 +189,7 @@ function signinCallback(authResult) {
 
       $('#name').append('<h2>' + response.displayName + '\'s Next Step</h2>')
       //add google id to scan href/link. that way when scan returns scanned_data we have the users id
-      $('#scan-button').attr('href', 'scan://scan?callback=http%3A%2F%2F646ee683.ngrok.com/scanredirect/'+response.id)
+      $('#scan-button').attr('href', 'scan://scan?callback=https%3A%2F%2Froots-elementary.herokuapp.com//scanredirect/'+response.id)
       //get calendar events on signIn and send events/user to database in function above
       getCalendar(signInData);
 
