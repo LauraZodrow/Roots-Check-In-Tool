@@ -21,6 +21,18 @@ var apiController = {
 			}
 		});
 	},
+	
+	// Return one user
+	getUser: function(req, res) {
+		User.findOne({googleId: req.params.id}, function(err, user) {
+			if (err) {
+				console.error(err);
+			} else {
+				res.send(user);
+			}
+		});
+	},
+
 	// On receiving a scan, save it, and then add it to the student who scanned in
 	saveScan: function(req, res, io) {
 
@@ -97,6 +109,7 @@ var apiController = {
 			res.render('index')
 		}
 	},
+
 	// Return grove calendar for one student
 	getGroveCalendar: function(req, res) {
 		User.findOne({googleId: req.params.user_id}, function(err, user) {
@@ -107,6 +120,7 @@ var apiController = {
 			}
 		})
 	},
+
 	// List all students with basic info + groveCalendar
 	listGroveCalendars: function(req, res) {
 		User.find({}, function(err, users) {
@@ -119,6 +133,7 @@ var apiController = {
 			}
 		});
 	},
+
 	// Update one student's groveCalendar
 	updateGroveCalendar: function(req, res) {
 		User.update({googleId: req.params.user_id}, { groveCalendar: req.body.calendar}, {}, function(err, numAffected){

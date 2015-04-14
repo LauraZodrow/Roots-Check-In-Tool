@@ -33,7 +33,7 @@ var googleController = {
 						console.error(err);
 						res.send(err);
 					}
-					else { 
+					else {
 						res.send(user);
 					}
 				});

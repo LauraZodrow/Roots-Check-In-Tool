@@ -21,35 +21,22 @@ block meta
 block content
 	button#signinButton Sign in with Google
 	.container
+		a#schedule-button.btn.btn-info.schedule-button(href='#', style='display:none')
+			i.fa.fa-table.fa-3x
 		#name
+
 		.progress.countDown
 			.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
 		.timer
 		#event
 		.eventImageContainer.row
-			#locationImage0.locationImage.col-xs-4.col-md-4
-			#activityImage0.activityImage.col-xs-4.col-md-4
+			#locationImage.locationImage.col-xs-4.col-md-4
+			#activityImage.activityImage.col-xs-4.col-md-4
 			#creatorImage.creatorImage.col-xs-4.col-md-4
 		.eventTextContainer.row
-			#locationText0.locationText.col-xs-4.col-md-4
-			#activityText0.activityText.col-xs-4.col-md-4
+			#locationText.locationText.col-xs-4.col-md-4
+			#activityText.activityText.col-xs-4.col-md-4
 			#creatorText.creatorText.col-xs-4.col-md-4
-		table#groveCalendar.table
-			tbody
-				tr
-					td
-						#locationImage1
-						#locationText1
-					td
-						#activytImage1
-						#activityText1
-				tr
-					td
-						#locationImage2
-						#locationText2
-					td
-						#activityImage2
-						#activityText2
 		.scan-button
 			button
 				a#scan-button Scan

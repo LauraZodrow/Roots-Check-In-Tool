@@ -91,7 +91,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var difference = moment(scan.event.end).diff(moment());
 		}
 		else {
-			var intervals = 60 / (EVENT_LENGTH / 60 * 1000);
+			var intervals = 60 / (EVENT_LENGTH / (60 * 1000));
 			var end_times = [];
 			// Create an array of all end times for this hour
 			for (var i =1; i<=intervals; i++) {
@@ -121,7 +121,6 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 }
 
 StudentLocationDisplay.prototype.render = function() {
-	console.log('Rendering:', this)
 	// render into the domnode based on where their location is
 	var location;
 	if (this.status === 'Found') {
@@ -159,7 +158,6 @@ $(function(){
 	$.get('api/user', function(students) {
 		studentsArray = _.map(students, function(student) {
 			studentInstance = new StudentLocationDisplay(student);
-			console.log('Student Instance Created:', studentInstance);
 			return studentInstance;
 		});
 	});

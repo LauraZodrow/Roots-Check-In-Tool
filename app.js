@@ -42,13 +42,14 @@ app.get('/grove-calendar', indexController.groveCalendar);
 app.get('/student-tracker', function(req, res) {
 	indexController.studentTracker(req, res, io);
 });
-// Student Full schedule 
-app.get('/student-full-schedule', indexController.studentFullSchedule);
 
+// Student Full schedule 
+app.get('/student-full-schedule/:id', indexController.studentFullSchedule);
 
 //API Routes
 app.post('/api/user', googleController.saveUser);
 app.get('/api/user', apiController.getUsers);
+app.get('/api/user/:id', apiController.getUser);
 app.get('/api/grove/:user_id', apiController.getGroveCalendar);
 app.put('/api/grove/:user_id', apiController.updateGroveCalendar);
 app.get('/api/grove', apiController.listGroveCalendars);
