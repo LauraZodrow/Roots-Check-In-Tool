@@ -7,7 +7,7 @@ window.TRANSITION_LENGTH = 2 * 60 * 1000;
 // Images for the various locations
 // TODO:  add images for all locations, with keys that are the name of the location
 window.LOCATION_IMAGES = {
-  library: '<img class="location-image" src="/img/blue-triangle.png">',
+  library: '<img class="location-image" src="/img/blue-triangle.png" style="width:70px">',
   'maker space': '<i class="location-image fa fa-car fa-4x">',
   tablets: '<i class="location-image fa fa-tablet fa-4x">'
 };
