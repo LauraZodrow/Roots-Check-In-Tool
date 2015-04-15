@@ -18,7 +18,7 @@ block content
 							li
 								a(href='/grove-calendar') Grove Calendar
 							li
-								a(href='/student-tracker') Who's Lost
+								a(href='/student-tracker') Student Tracker
 
 								//- .dropdown
 								//- a.dropdown-toggle(href='/student-tracker', data-toggle='dropdown')
@@ -33,8 +33,11 @@ block content
 	.container
 		h2 Create Student Grove Schedule
 		h3 Select Student
-		input.form-control(id="student-name-search" name="name" type="text" placeholder="Search for a student")
-		select.student-names-select(id="student-names-select" style={visibility: 'hidden'})
+		.form-group
+			input.form-control(id="student-name-search" name="name" type="text" placeholder="Search for a student")
+		.form-group
+			select.student-names-select.form-control#student-names-select(style={visibility: 'hidden'})
+				option Select a student...
 
 
 		h2 Student Schedule

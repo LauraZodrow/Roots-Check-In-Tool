@@ -1,47 +1,39 @@
 extends layout
 
 block content
-	.row.container
-		.col-sm-6
-			h1.text-center.text-info
-				i.fa.fa-table.small
-				|   Google Calendar
-			table#googleCalendar.table.table-striped
-				tbody
-
-		.col-sm-6
-			h1.text-center.text-info 
-				i.fa.fa-list-ol.small
-				|   Grove
-			table#groveCalendar.table.table-striped
-				tbody
-					tr
-						td 
-							h2 1
-						td
-							#locationImage1
-							#locationText1
-						td
-							#activityImage1
-							#activityText1
-					tr
-						td 
-							h2 2
-						td
-							#locationImage2
-							#locationText2
-						td
-							#activityImage2
-							#activityText2
-					tr
-						td 
-							h2 3
-						td
-							#locationImage3
-							#locationText3
-						td
-							#activityImage3
-							#activityText3
+	.container
+		h1.text-center.text-info 
+			i.fa.fa-list-ol.small
+			|   Grove
+		table#groveCalendar.table.table-striped
+			tbody
+				tr
+					td 
+						h2 1
+					td
+						#locationImage1
+						#locationText1
+					td
+						#activityImage1
+						#activityText1
+				tr
+					td 
+						h2 2
+					td
+						#locationImage2
+						#locationText2
+					td
+						#activityImage2
+						#activityText2
+				tr
+					td 
+						h2 3
+					td
+						#locationImage3
+						#locationText3
+					td
+						#activityImage3
+						#activityText3
 
 block scripts
 	script(src='/js/full-schedule.js')

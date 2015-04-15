@@ -28,14 +28,25 @@ block content
 		.progress.countDown
 			.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
 		.timer
-		.eventImageContainer.row
-			#locationImage.locationImage.col-xs-4.col-md-4
-			#activityImage.activityImage.col-xs-4.col-md-4
-			#creatorImage.creatorImage.col-xs-4.col-md-4
-		.eventTextContainer.row
-			#locationText.locationText.col-xs-4.col-md-4
-			#activityText.activityText.col-xs-4.col-md-4
-			#creatorText.creatorText.col-xs-4.col-md-4
+		if fail
+			.eventContainer.whoopsContainer
+				.eventImageContainer.row
+					#locationImage.locationImage.col-xs-4
+					#activityImage.activityImage.col-xs-4
+					#creatorImage.creatorImage.col-xs-4
+				.eventTextContainer.row
+					#locationText.locationText.col-xs-4
+					#activityText.activityText.col-xs-4
+					#creatorText.creatorText.col-xs-4
+		else
+			.eventImageContainer.row
+				#locationImage.locationImage.col-xs-4
+				#activityImage.activityImage.col-xs-4
+				#creatorImage.creatorImage.col-xs-4
+			.eventTextContainer.row
+				#locationText.locationText.col-xs-4
+				#activityText.activityText.col-xs-4
+				#creatorText.creatorText.col-xs-4
 		.scan-button
 			button
 				a#scan-button Scan

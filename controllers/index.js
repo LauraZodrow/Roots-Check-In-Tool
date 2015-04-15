@@ -11,7 +11,7 @@ var indexController = {
 	},
 
 	whoops: function(req, res){
-		res.render('whoops')
+		res.render('index', {fail: true});
 	},
 
 	studentTracker: function(req, res) {
