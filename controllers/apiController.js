@@ -1,6 +1,6 @@
 var https = require('https');
 var Scan = require('../models/Scan');
-var User = require('../models/User');
+var User = require('../models/user');
 var _ = require('lodash');
 var moment = require('moment');
 var async = require('async');
