@@ -64,8 +64,6 @@ renderGroveCalendar = function(numEvents, userData) {
       
       var nextEvent = calendar[nextEventIndex];
 
-      $('#event').append($('<h3>' + nextEvent.location + ': ' + nextEvent.activity + '</h3>'));
-
       renderLocationImage(nextEvent.location, nextEvent.activity);
   });
 }
@@ -84,13 +82,6 @@ function getCalendar(userData){
         //loop through all events in user's google calendar
         var events = _.map(response.items, function(event){
 
-          // If event has a description, use that, otherwise use the summary
-          if (event.description) {
-            var description = event.description;
-          } else {
-            var description = event.summary;
-          }
-
           //return events in this format
           return {
               eventId: event.id,
@@ -98,7 +89,8 @@ function getCalendar(userData){
               creator: event.creator.email,
               start: event.start.dateTime,
               end: event.end.dateTime,
-              description: description
+              description: event.description,
+              summary: event.summary
             };
         });
 
@@ -114,11 +106,11 @@ function getCalendar(userData){
         });
         
         //loop through all events to find one that is 10 minutes away
-        var nextEvent = _.find(response.items, function(event){
+        var nextEvent = _.find(events, function(event){
           var a = currentTime;
-          var b = moment(event.start.dateTime);
+          var b = moment(event.start);
           var difference = b.diff(a, 'minutes');
-          return (difference <= 10 && difference > 0)
+          return (difference <= 10 && difference > 0);
         });
 
         // Check to see if there's an event currently happening that the student is late for or is checking into the app before the event is done
@@ -128,21 +120,16 @@ function getCalendar(userData){
 
         //if a current event is found, show location, teacher, and activity. 
         if (currentEvent) {
-          $('#event').prepend($('<h3 class="current-event"> You have an event at: ' + currentEvent.location + '. Please check back later.</h3>'));
-          
           // Render location for current event
-          renderLocationImage(currentEvent.location, currentEvent.description, currentEvent.creator);
+          renderLocationImage(currentEvent.location, currentEvent.summary, currentEvent.creator);
         } 
         // If there's not a current event, show the next event
         else if (nextEvent) {
-          //pass event location and creator to render correct image
-
-          $('#event').prepend($('<h3>' + nextEvent.location + ': ' + activity + '</h3>'));
 
           //pass event start time to renderProgressBar
           renderProgressBar(nextEvent.start);
 
-          renderLocationImage(nextEvent.location, nextEvent.description, nextEvent.creator);
+          renderLocationImage(nextEvent.location, nextEvent.summary, nextEvent.creator);
         }
         // If nothing came back from the google calendar, render the next grove calendar event
         else {

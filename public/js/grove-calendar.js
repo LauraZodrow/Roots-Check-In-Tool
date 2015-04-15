@@ -227,6 +227,19 @@ EventDisplay.prototype.render = function(container, replace) {
 }
 
 $(function(){
+	// Load up the grove calendar options from CONFIG.js
+	// The keys of GROVE_ACTIVITIES are the different centers
+	_.keys(GROVE_ACTIVITIES).forEach( function(center) {
+		var group = $('<optgroup label="' + center + '"></optgroup>');
+
+		// For each center, take all the activities and add an option
+		GROVE_ACTIVITIES[center].forEach( function(activity) {
+			var option = $('<option></option>').attr('value', [center, activity].join('#')).text(activity);
+			group.append(option);
+		});
+		$('select[name="activity"]').append(group);
+	});
+
 	// Get all students
 	$.get('/api/grove', function(data){
 

@@ -15,7 +15,8 @@ var userSchema = mongoose.Schema ({
 			start: String,
 			end: String,
 			activity: String,
-			description: String
+			description: String,
+			summary: String
 		}],
 		scannedLocation: String,
 		correct: Boolean
@@ -26,7 +27,8 @@ var userSchema = mongoose.Schema ({
 		creator: String,
 		start: String,
 		end: String,
-		description: String
+		description: String,
+		summary: String,
 	}],
 	groveCalendar: [{
 		location: String,
