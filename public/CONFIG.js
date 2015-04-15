@@ -17,7 +17,8 @@ window.LOCATION_IMAGES = {
 window.ACTIVITY_IMAGES = {
   'blocks': '<i class="activity-image fa fa-th-large fa-4x">',
   'level reading': '<i class="activity-image fa fa-pencil fa-4x">',
-  'razkids': '<i class="activity-image fa fa-star fa-4x">'
+  'razkids': '<i class="activity-image fa fa-star fa-4x">',
+  'st math': '<i class="activity-image fa fa-plus-square fa-4x">'
 };
 
 // Images for event creator

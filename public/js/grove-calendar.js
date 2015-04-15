@@ -22,7 +22,7 @@ var StudentGroveDisplay = function(student){
 	this.name = student.name;
 	this.image = student.image;
 	this.calendar = student.groveCalendar || [];
-	this.option = $('<a class="list-group-item" style={cursor: pointer}>'+student.name+'</a>');
+	this.option = $('<select class="form-control"><option>'+student.name+'</option></select>');
 	this.optionRendered = false;
 
 	this.eventDisplays = _.map(student.groveCalendar, function(event, index) {
@@ -35,7 +35,7 @@ StudentGroveDisplay.prototype.renderOption = function(selectId){
 	if (!this.optionRendered) {
 		$(selectId).append(this.option);
 		this.optionRendered = true;
-		this.option.click(this.renderCalendar.bind(this, '#events-list'));
+		this.option.select(this.renderCalendar.bind(this, '#events-list'));
 	}
 };
 
@@ -244,19 +244,23 @@ $(function(){
 	$.get('/api/grove', function(data){
 
 		// Initially fill the student list
-		$('#student-names-container').text('');
-		$('#student-names-container').append('<div class="list-group" id="student-list"></div>');
+		$('#student-names-select').empty();
+		
 		students = _.map(_.sortBy(data, 'name'), function(s) {
 			student = new StudentGroveDisplay(s);
-			student.renderOption('#student-list');
+			student.renderOption('#student-names-select');
 			return student;
 		});
+
 		// When the student name input is changed, go through the students and only display the ones whose name matches the fragment in the input
 		$('#student-name-search').on('keyup', function(e){
+
+			$('#student-names-select').css('visibility', '');
+
 			var frag = $(this).val().toLowerCase();
 			var matching_students = _.each(students, function(s) {
 				if (s.name.toLowerCase().match(frag)){
-					s.renderOption('#student-list');
+					s.renderOption('#student-names-select');
 				}
 				else {
 					$(s.option).remove();
