@@ -9,16 +9,22 @@ window.TRANSITION_LENGTH = 2 * 60 * 1000;
 window.LOCATION_IMAGES = {
   'library': '<img class="location-image" src="/img/blue-triangle.png" style="width:70px">',
   'maker space': '<i class="location-image fa fa-car fa-4x">',
-  'tablets': '<i class="location-image fa fa-tablet fa-4x">'
+  'tablets': '<i class="location-image fa fa-tablet fa-4x">',
+  'red station':'<img class="location-image" src="/img/x.png">',
+  'blue station': '<img class="location-image" src="/img/circle.png">',
+  'green station': '<img class="location-image" src="/img/triangle.png">'
 };
 
 // Images for the various activity / descriptions
 // TODO: add images for all activities, with keys that are the name of the activity
 window.ACTIVITY_IMAGES = {
-  'blocks': '<i class="activity-image fa fa-th-large fa-4x">',
+  'blocks': '<img class="activity-image" src="/img/blocks.png">',
   'level reading': '<i class="activity-image fa fa-pencil fa-4x">',
   'razkids': '<i class="activity-image fa fa-star fa-4x">',
-  'st math': '<i class="activity-image fa fa-plus-square fa-4x">'
+  'st math': '<i class="activity-image fa fa-plus-square fa-4x">',
+  'coloring': '<img class="activity-image" src="/img/crayon_green.png">',
+  'mask': '<img class="activity-image" src="/img/masks.png">'
+
 };
 
 // Images for event creator

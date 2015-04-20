@@ -136,3 +136,24 @@ button {
 	width:90px;
 	height:auto;
 }
+
+.location-image img {
+	width: 180px;
+}
+
+.activity-image img {
+	width:180px;
+}
+
+#groveCalendar .activity-image{
+	width:65px;
+}
+
+
+#groveCalendar.table-striped>tbody>tr:nth-of-type(odd) {
+	background-color:#fff;
+}
+
+#groveCalendar.table-striped>tbody>tr:nth-child(1) {
+	background-color: gold;
+}
