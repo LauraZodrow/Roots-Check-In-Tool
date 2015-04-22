@@ -2,9 +2,9 @@ extends layout
 
 block content
 	.container
-		h1.text-center.text-info 
+		h2.text-center.grove-heading
 			i.fa.fa-list-ol.small
-			|   Grove
+			|   Grove Cycle
 		table#groveCalendar.table.table-striped
 			tbody
 				tr
@@ -16,6 +16,9 @@ block content
 					td
 						#activityImage1
 						#activityText1
+					td
+						#focusAreaImage1
+						#focusAreaText1
 				tr
 					td 
 						h2 2
@@ -25,6 +28,9 @@ block content
 					td
 						#activityImage2
 						#activityText2
+					td
+						#focusAreaImage2
+						#focusAreaText2
 				tr
 					td 
 						h2 3
@@ -34,6 +40,9 @@ block content
 					td
 						#activityImage3
 						#activityText3
+					td
+						#focusAreaImage3
+						#focusAreaText3
 
 block scripts
 	script(src='/js/full-schedule.js')

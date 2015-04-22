@@ -15,7 +15,8 @@ var scanSchema = mongoose.Schema ({
 		start: String,
 		end: String,
 		activity: String,
-		summary: String
+		summary: String,
+		focus_area: String
 	}]
 });
 

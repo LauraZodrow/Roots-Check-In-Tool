@@ -16,29 +16,19 @@ block content
 					ul.nav
 						ul.nav.navbar-nav.navbar-right(style="margin-top:9px")
 							li
-								a(href='/grove-calendar') Grove Calendar
+								a(href='/grove-calendar') Create Grove Activities
 							li
 								a(href='/student-tracker') Student Tracker
 
-								//- .dropdown
-								//- a.dropdown-toggle(href='/student-tracker', data-toggle='dropdown')
-								//- 	| Who's Lost
-									//- span.caret
-									//- 	ul.dropdown-menu(role="menu")
-									//- 		li
-									//- 			a Library
-									//- 		li
-									//- 			a Maker Space
+								
 
 	.container
-		h2 Create Student Grove Schedule
+		h2 Create Grove Activities
 		h3 Select Student
 		.form-group
 			input.form-control(id="student-name-search" name="name" type="text" placeholder="Search for a student")
 		.form-group
-			select.student-names-select.form-control#student-names-select(style={visibility: 'hidden'})
-				option Select a student...
-
+			select.student-names-select.form-control#student-names-select(style={visibility: 'hidden'} multiple)
 
 		h2 Student Schedule
 		h4.student-title
@@ -52,6 +42,7 @@ block content
 						th Checked In
 						th Center
 						th Activity
+						th Focus Area
 						th Edit
 						th Remove
 				tbody(id="events-list")
@@ -61,22 +52,28 @@ block content
 					|   New Event
 				button.btn.btn-success.pull-right(id="save-calendar")
 					i.fa.fa-calendar
-					|   Save Calendar
+					|   Save Grove Cycle
 
 		div.row
 			form.form.activity-form(id="activity-form" style={display: 'none'})
 				fieldset
 					legend(id="activity-legend")
-					div.form-group
+					.form-group
 						label(for="activity") Activity
 						select.form-control(name="activity")
 							option(selected disabled) Choose an activity...
-					div.checkbox
-						label
-							input.form-control(name="checkedIn" type="checkbox")
-							|Checked in
-					button.btn.btn-danger.btn-sm(id="cancel-event-add") Done
-					button.btn.btn-success.btn-sm.pull-right(id="add-event") 
+					.form-group
+						label(for="focus_area") Focus Area
+						select.form-control(name="focus_area")
+							option(selected disabled) Choose a focus area...
+					.form-group
+						.col-sm-offset-2
+						div.checkbox
+							label
+								input(name="checkedIn" type="checkbox")
+								|Checked in
+					button.btn.btn-danger.btn-sm.pull-right(id="cancel-event-add") Done
+					button.btn.btn-success.btn-sm(id="add-event") 
 						i.fa.fa-plus
 						span(id='add-event-text')   Add Event
 block scripts

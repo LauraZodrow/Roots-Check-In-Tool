@@ -1,4 +1,6 @@
 renderProgressBar = function(eventStart){
+  $('.countDown').show();
+
   var currentTime = moment();
 
   $('.timer').countdown({  
@@ -13,7 +15,7 @@ renderProgressBar = function(eventStart){
 }
 
 // Render a location image
-renderLocationImage = function(eventLocation, eventActivity, eventCreator) {
+renderLocationImage = function(eventLocation, eventActivity, eventCreator, focusArea) {
 
   $('#locationImage').append(LOCATION_IMAGES[eventLocation.toLowerCase()]);
   $('#locationText').append(eventLocation);
@@ -30,6 +32,9 @@ renderLocationImage = function(eventLocation, eventActivity, eventCreator) {
   if (eventCreator) {
     $('#creatorImage').append(CREATOR_IMAGES[eventCreator]);
     $('#creatorText').append(eventCreator);
+  } else if (focusArea) {
+    $('#creatorImage').append(FOCUS_AREAS[focusArea]);
+    $('#creatorText').append(focusArea);
   }
 }
 
@@ -64,7 +69,7 @@ renderGroveCalendar = function(numEvents, userData) {
       
       var nextEvent = calendar[nextEventIndex];
 
-      renderLocationImage(nextEvent.location, nextEvent.activity);
+      renderLocationImage(nextEvent.location, nextEvent.activity, null, nextEvent.focus_area);
   });
 }
 
@@ -86,13 +91,14 @@ function getCalendar(userData){
           return {
               eventId: event.id,
               location: event.location,
-              creator: event.creator.email,
+              creator: event.creator.displayName || event.creator.email,
               start: event.start.dateTime,
               end: event.end.dateTime,
               description: event.description,
               summary: event.summary
             };
         });
+
 
         //push all events objects in users calendar
         userData.calendar = events;
@@ -175,6 +181,7 @@ function signinCallback(authResult) {
       $('#schedule-button').attr('href', '/student-full-schedule/'+response.id).show();
 
       //get calendar events on signIn and send events/user to database in function above
+      $('.scan-button').show();
       getCalendar(signInData);
 
   });

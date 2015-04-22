@@ -33,15 +33,19 @@ renderGoogleLocationImage = function(event) {
 }
 
 // Render a location image into grove
-renderGroveLocationImage = function(eventLocation, eventActivity, order) {
+renderGroveLocationImage = function(event, order) {
 
   // Location
-  $('#locationImage' + order).append(LOCATION_IMAGES[eventLocation.toLowerCase()]);
-  $('#locationText' + order).append(eventLocation);
+  $('#locationImage' + order).append(LOCATION_IMAGES[event.location.toLowerCase()]);
+  $('#locationText' + order).append(event.location);
 
   // Activity
-  $('#activityImage' + order).append(ACTIVITY_IMAGES[eventActivity.toLowerCase()]);
-  $('#activityText' + order).append(eventActivity);
+  $('#activityImage' + order).append(ACTIVITY_IMAGES[event.activity.toLowerCase()]);
+  $('#activityText' + order).append(event.activity);
+
+  // Focus Area
+  $('#focusAreaImage' + order).append(FOCUS_AREAS[event.focus_area]);
+  $('#focusAreaText' + order).append(event.focus_area);
 };
 
 // Render the grove calendar.
@@ -56,14 +60,14 @@ renderGroveCalendar = function(calendar) {
     nextEventIndex = 0;
   }
 
-  // Get next three events
+  // Get next three events, going back to the top if needed
   var nextEvent = calendar[nextEventIndex];
   var nexterEvent = calendar[(nextEventIndex + 1) % calendar.length];
   var nextestEvent = calendar[(nextEventIndex + 2) % calendar.length];
   
-  renderGroveLocationImage(nextEvent.location, nextEvent.activity, 1);
-  renderGroveLocationImage(nexterEvent.location, nexterEvent.activity, 2);
-  renderGroveLocationImage(nextestEvent.location, nextestEvent.activity, 3)
+  renderGroveLocationImage(nextEvent, 1);
+  renderGroveLocationImage(nexterEvent, 2);
+  renderGroveLocationImage(nextestEvent, 3);
 };
 
 // Render the google calendar

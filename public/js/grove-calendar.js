@@ -72,9 +72,10 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 			// On submit, grab all the data, create a new EventDisplay object, push it into the student's event displays, and append it to the DOM
 			var newEvent = {};
 			newEvent.checkedIn = $("#activity-form input[name='checkedIn']")[0].checked;
-			var activity = $("#activity-form select").val();
+			var activity = $('#activity-form select[name="activity"]').val();
 			newEvent.location = activity.split('#')[0];
 			newEvent.activity = activity.split('#')[1];
+			newEvent.focus_area = $('#activity-form select[name="focus_area"]').val();
 			var index = self.eventDisplays.length;
 			
 			newEvent = new EventDisplay(self, newEvent, index)
@@ -136,12 +137,13 @@ EventDisplay.prototype.createDisplay = function() {
 		checkedIn = $(checkedIn).append('<i class="fa fa-circle-o">');
 	}
 	// Center
-	var location = '<td></td>';
-	location = $(location).text(this.event.location);
+	var location = $('<td></td>').text(this.event.location);
 
 	// Activity
-	var activity = '<td></td>';
-	activity = $(activity).text(this.event.activity);
+	var activity = $('<td></td>').text(this.event.activity);
+
+	// Focus Area
+	var focus_area = $('<td></td>').text(this.event.focus_area);
 
 	// Buttons for editing and removing, added to the EventDisplay object
 	var edit = '<td></td>';
@@ -152,7 +154,7 @@ EventDisplay.prototype.createDisplay = function() {
 	remove = $(remove).append(this.removeButton);
 
 	// Append cells to the row
-	return $(row).append(checkedIn, location, activity, edit, remove)[0];
+	return $(row).append(checkedIn, location, activity, focus_area, edit, remove)[0];
 };
 
 EventDisplay.prototype.render = function(container, replace) {
@@ -173,7 +175,8 @@ EventDisplay.prototype.render = function(container, replace) {
 	// Attach the event handler for the edit button
 	$(this.editButton).click(function(e) {
 		// Show the event form, fill in the defaults for this event, bind submission to changing this event
-		$('#activity-form select').val(self.event.location+'#'+self.event.activity);
+		$('#activity-form select[name="activity"]').val(self.event.location+'#'+self.event.activity);
+		$('#activity-form select[name="focus_area"]').val(self.event.focus_area);
 		if (self.event.checkedIn) {
 			$('#activity-form input[name="checkedIn"]')[0].checked = true;
 		} else {
@@ -186,7 +189,7 @@ EventDisplay.prototype.render = function(container, replace) {
 				e.preventDefault();
 				// Update values for this event
 				self.event.checkedIn = $("#activity-form input[name='checkedIn']")[0].checked;
-				var activity = $("#activity-form select").val();
+				var activity = $('#activity-form select[name="activity"]').val();
 				if (activity) {
 					self.event.location = activity.split('#')[0];
 					self.event.activity = activity.split('#')[1];
@@ -195,6 +198,7 @@ EventDisplay.prototype.render = function(container, replace) {
 					self.event.location = '';
 					self.event.activity = '';
 				}
+				self.event.focus_area = $('#activity-form select[name="focus_area"]').val();
 				
 				// Reset the form, unbind handlers, and hide it
 				resetForm(true)
@@ -237,6 +241,12 @@ $(function(){
 			group.append(option);
 		});
 		$('select[name="activity"]').append(group);
+	});
+
+	// Load the FOCUS_AREA options, the keys are the different options
+	_.chain(FOCUS_AREAS).keys().sortBy().value().forEach( function(fa) {
+		var option = $('<option></option>').attr('value', fa).text(fa);
+		$('select[name="focus_area"]').append(option);
 	});
 
 	// Get all students

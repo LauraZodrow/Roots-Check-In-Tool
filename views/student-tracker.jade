@@ -16,49 +16,48 @@ block content
 					ul.nav
 						ul.nav.navbar-nav.navbar-right(style="margin-top:9px")
 							li
-								a(href='/grove-calendar') Grove Calendar
+								a(href='/grove-calendar') Create Grove Activities
 							li
 								a(href='/student-tracker') Student Tracker
-
-								//- dropdown
-								//- a.dropdown-toggle(href='/student-tracker', data-toggle='dropdown')
-								//- 	| Who's Lost
-									//- span.caret
-									//- 	ul.dropdown-menu(role="menu")
-									//- 		li
-									//- 			a Library
-									//- 		li
-									//- 			a Maker Space
 
 	h3.student-tracker-title Student Tracker
 	
 	.container
-		button Lost
+		.btn-toolbar#filter-container
+			.btn-group
+				button.btn.btn-primary All
+			.btn-group
+				button.btn Lost
+			.btn-group#location-filters
 
-		#accordion.panel-group(role='tablist', aria-multiselectable='true')
-			.panel.panel-default.title-panel
-				#headingOne.panel-heading(role='tab')
-					a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
-						h4 Lost
-			#collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
-				.panel-body
-					#Lost
-			.panel.panel-default
-				#headingTwo.panel-heading(role='tab')
-					h4.panel-title
-						a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
-							h4 Maker Space
-			#collapseTwo.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingTwo')
-				.panel-body
-					#MakerSpace
-			.panel.panel-default
-				#headingThree.panel-heading(role='tab')
-					h4.panel-title
-						a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
-							h4 Library
-			#collapseThree.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingThree')
-				.panel-body
-					#Library
+		#locations-container
+			#Lost
+				h2 Lost
+
+		//- #accordion.panel-group(role='tablist', aria-multiselectable='true')
+		//- 	.panel.panel-default.title-panel
+		//- 		#headingOne.panel-heading(role='tab')
+		//- 			a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+		//- 				h4 Lost
+		//- 	#collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
+		//- 		.panel-body
+		//- 			#Lost
+		//- 	.panel.panel-default
+		//- 		#headingTwo.panel-heading(role='tab')
+		//- 			h4.panel-title
+		//- 				a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
+		//- 					h4 Maker Space
+		//- 	#collapseTwo.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingTwo')
+		//- 		.panel-body
+		//- 			#MakerSpace
+		//- 	.panel.panel-default
+		//- 		#headingThree.panel-heading(role='tab')
+		//- 			h4.panel-title
+		//- 				a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
+		//- 					h4 Library
+		//- 	#collapseThree.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingThree')
+		//- 		.panel-body
+		//- 			#Library
 	
 
 block scripts

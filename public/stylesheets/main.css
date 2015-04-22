@@ -1,4 +1,5 @@
 .countDown {
+	display:none;
 	max-width: 90%;
 	margin: auto;
 }
@@ -18,6 +19,7 @@
 }
 
 .scan-button {
+	display:none;
 	text-align: center;
 	margin: auto;
 	margin-top: 5%;
@@ -155,5 +157,37 @@ button {
 }
 
 #groveCalendar.table-striped>tbody>tr:nth-child(1) {
-	background-color: gold;
+	border: #8BAB42 solid 3px;
+	border-radius: 5px;
+}
+
+.container {
+	margin-bottom: 30px;
+}
+
+#student-icon {
+	margin-right: 10px;
+}
+
+.grove-heading {
+	margin-bottom: 20px;
+}
+
+.eventImageContainer #activityImage>img {
+	width:75px;
+}
+
+.schedule-button {
+	position: absolute;
+	top:5px;
+	right:5px;
+}
+
+.scan-button .fa {
+	margin-right:8px;
+}
+
+#scan-button {
+	color:#fff;
+	text-decoration: none;
 }

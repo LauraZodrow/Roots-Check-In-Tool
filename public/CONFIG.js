@@ -29,7 +29,7 @@ window.ACTIVITY_IMAGES = {
 
 // Images for event creator
 window.CREATOR_IMAGES = {
-	'team@rootselementary.org': '<img src="/img/jill-image.jpg" class="creator-image">'
+	'Roots Elementary': '<img src="/img/jill-image.jpg" class="creator-image">'
 }
 
 // The list of all possible grove calendar activities
@@ -38,6 +38,13 @@ window.GROVE_ACTIVITIES = {
 	'Maker Space': ['Blocks', 'Legos'],
 	'Tablets': ['ST Math', 'RazKids']
 };
+
+// The list of all possible Focus Areas, and their associated pictures
+window.FOCUS_AREAS = {
+	'Fluency': '<i class="focus-area-image fa fa-comment fa-4x">',
+	'Mental Math': '<i class="focus-area-image fa fa-calculator fa-4x">',
+	'Noise Level': '<i class="focus-area-image fa fa-volume-up fa-4x">'
+}
 
 // Getting activity from google descriptions
 window.GET_ACTIVITY = function(description) {

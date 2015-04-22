@@ -1,4 +1,7 @@
+// Globals
+
 var studentsArray = [];
+var FILTER = 'All'
 
 // Class of student display
 var StudentLocationDisplay = function(student) {
@@ -67,7 +70,8 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 	// If the student has not scanned in recently, do not display the last scan information
 	else {
 		this.el.removeClass('Found').addClass('Lost');
-		this.el.find('.studentInfoContainer').empty();
+		var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
+		this.el.find('.studentInfoContainer').empty().append(message);
 	}
 };
 
@@ -150,6 +154,46 @@ var scanReceived = function(scan) {
 };
 
 $(function(){
+
+	// Load the different button filters and divs
+	_.keys(LOCATION_IMAGES).forEach( function(location) {
+		var prettyDisplay = location.split(' ').map( function(word) {
+			return word[0].toUpperCase() + word.slice(1);
+		}).join(' ');
+
+		// Create the button and add it to button group
+		var button = $('<button class="btn"></button>').text(prettyDisplay);
+		$('#location-filters').append(button)
+
+		// Create the container for the students
+		// Title is just the location, the container id needs to have spaces removed
+		var title = $('<h2></h2>').text(prettyDisplay);
+		var container = $('<div></div>').attr('id', prettyDisplay.split(' ').join('')).append(title);
+		$('#locations-container').append(container);
+	});
+
+	// Attach event handler to the filter buttons
+	$('#filter-container button').click(function(e) {
+		
+		// Set filter
+		FILTER = $(this).text();
+
+		// Update display
+		if (FILTER === 'All') {
+			$('#locations-container > div').show();
+		}
+		else {
+			// First, hide all containers
+			$('#locations-container > div').hide();
+
+			// Then show just the one with id matching the filter (spaces removed from filter)
+			$('#' + FILTER.split(' ').join('')).show();
+		}
+
+		// Update the display of the filter buttons by removing primary from all and adding it to this one
+		$('#filter-container button.btn-primary').removeClass('btn-primary');
+		$(this).addClass('btn-primary');
+	});
 
 	// Get AJAX call to User database and get all the students, create StudentLocationDisplay objects for each, and put them in the students array
 	var tracker = io.connect();
