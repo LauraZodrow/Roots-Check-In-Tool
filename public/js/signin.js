@@ -170,8 +170,9 @@ function getCalendar(userData){
 function signinCallback(authResult) {
   if (authResult['status']['signed_in']) {
     // Update the app to reflect a signed in user
-    // Hide the sign-in button now that the user is authorized, for example:
-    document.getElementById('signinButton').setAttribute('style', 'display: none');
+    // Hide the sign-in button now that the user is authorized, and show the container
+    $('#signinButton').hide();
+    $('#main-container').show()
 
     //make call to google profile for users account information
     gapi.client.request('https://www.googleapis.com/plus/v1/people/me?fields=name(familyName%2Cformatted%2CgivenName)%2CdisplayName%2Cemails%2Fvalue%2Cimage%2Furl%2Cid').execute(function(response) {

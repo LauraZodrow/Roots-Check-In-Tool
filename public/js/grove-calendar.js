@@ -269,7 +269,7 @@ $(function(){
 			$('#student-names-select').css('visibility', '');
 
 			var frag = $(this).val().toLowerCase();
-			var matching_students = _.each(students, function(s) {
+			_.each(students, function(s) {
 				if (s.name.toLowerCase().match(frag)){
 					s.renderOption('#student-names-select');
 				}
@@ -278,6 +278,11 @@ $(function(){
 					s.optionRendered = false;
 				}
 			});
+
+			// If there is only one student in the list, trigger change
+			if ($('#student-names-select option').length === 1) {
+				$('#student-names-select').trigger('change');
+			}
 		});
 	});
 });

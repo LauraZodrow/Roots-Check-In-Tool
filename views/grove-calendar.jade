@@ -28,14 +28,14 @@ block content
 		.form-group
 			input.form-control(id="student-name-search" name="name" type="text" placeholder="Search for a student")
 		.form-group
-			select.student-names-select.form-control#student-names-select(style={visibility: 'hidden'} multiple)
+			select.student-names-select.form-control#student-names-select(style={visibility: 'hidden'})
 
 		h4.student-title
 			span(id="student-icon")
 			strong(id="student-name")
 			span.text-muted(id="title-text")
 
-		div.calendar-container(id="calendar-container" style={display: 'none'})
+		div.calendar-container(id="calendar-container" style="display: none")
 			table.table.table-striped
 				thead
 					tr
@@ -54,7 +54,7 @@ block content
 					|   Save Grove Cycle
 
 		div.row
-			form.form.activity-form(id="activity-form" style={display: 'none'})
+			form.form.activity-form(id="activity-form" style="display: none")
 				fieldset
 					legend(id="activity-legend")
 					.form-group
