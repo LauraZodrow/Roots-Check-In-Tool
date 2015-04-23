@@ -67,7 +67,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 		// Time of the scan, if we want to display this information
 		// var time = this.recentScan ? moment(this.recentScan.time).fromNow() : '';
-		console.log('Recent scan:', this.recentScan);
+		console.log('Recent scan:', this.recentScan.event[0].location);
 
 		this.el.find('.studentInfoContainer').empty().append('<p class="last-scan-info">' + this.currentLocation + '</p><p>Should be: <span class="correct-location-info' + this.recentScan.event[0].location + '</span></p>');
 	}
