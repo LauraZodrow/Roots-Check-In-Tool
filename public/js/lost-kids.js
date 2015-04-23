@@ -64,8 +64,12 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 	// If the student is in the wrong location, display the scan information
 	else if (this.status === 'Wrong Location') {
 		this.el.removeClass('Found').addClass('Lost');
-		var time = this.recentScan ? moment(this.recentScan.time).fromNow() : '';
-		this.el.find('.studentInfoContainer').empty().append('<p class="last-scan-info">' + this.currentLocation + time + '</p><p>Should be: <span class="correct-location-info' + this.recentScan.event[0].location + '</span></p>');
+
+		// Time of the scan, if we want to display this information
+		// var time = this.recentScan ? moment(this.recentScan.time).fromNow() : '';
+		console.log('Recent scan:', this.recentScan);
+
+		this.el.find('.studentInfoContainer').empty().append('<p class="last-scan-info">' + this.currentLocation + '</p><p>Should be: <span class="correct-location-info' + this.recentScan.event[0].location + '</span></p>');
 	}
 	// If the student has not scanned in recently, do not display the last scan information
 	else {
