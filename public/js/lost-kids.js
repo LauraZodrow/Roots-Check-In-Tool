@@ -162,8 +162,9 @@ $(function(){
 		}).join(' ');
 
 		// Create the button and add it to button group
-		var button = $('<button class="btn"></button>').text(prettyDisplay);
-		$('#location-filters').append(button)
+		var button = $('<button class="btn btn-info btn-block"></button>').text(prettyDisplay);
+		var listItem = $('<li>').append(button)
+		$('#location-filters').append(listItem);
 
 		// Create the container for the students
 		// Title is just the location, the container id needs to have spaces removed
@@ -173,7 +174,7 @@ $(function(){
 	});
 
 	// Attach event handler to the filter buttons
-	$('#filter-container button').click(function(e) {
+	$('#location-filters button').click(function(e) {
 		
 		// Set filter
 		FILTER = $(this).text();
@@ -191,8 +192,8 @@ $(function(){
 		}
 
 		// Update the display of the filter buttons by removing primary from all and adding it to this one
-		$('#filter-container button.btn-primary').removeClass('btn-primary');
-		$(this).addClass('btn-primary');
+		$('#location-filters button.btn-warning').removeClass('btn-warning').addClass('btn-info');
+		$(this).removeClass('btn-info').addClass('btn-warning');
 	});
 
 	// Get AJAX call to User database and get all the students, create StudentLocationDisplay objects for each, and put them in the students array

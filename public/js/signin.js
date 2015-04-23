@@ -5,12 +5,23 @@ renderProgressBar = function(eventStart){
 
   $('.timer').countdown({  
     start_time: currentTime, //Time when the progress bar is at 0%
-      end_time: eventStart, //Time Progress bar is at 100% and timer runs out
-      progress: $('.progress-bar'), //There dom element which should display the progressbar.
-      onComplete: function() {
-            $('.timer').show();
-                  $('.timer').replaceWith("<div class=\"timer ended\">Time's Up!</div>");
-      }    
+    end_time: eventStart, //Time Progress bar is at 100% and timer runs out
+    progress: $('.progress-bar'), //There dom element which should display the progressbar.
+    onComplete: function() {
+      $('.timer').show();
+      $('.timer').replaceWith("<div class=\"timer ended\">Time's Up!</div>");
+    },
+    update_progress : function(progress, element){
+      if (Math.floor(progress) === 50) {
+        $(element).removeClass('progress-bar-success').addClass('progress-bar-warning');
+      } else if (Math.floor(progress) === 75) {
+        $(element).removeClass('progress-bar-warning').addClass('progress-bar-danger');
+      } 
+
+      element.attr('aria-valuenow', Math.floor(progress));//We set a custom attribute, 'area-valuenow' containing the progress
+      element.css('width', Math.floor(progress)+'%');//Fill the bar with percentage of progress
+      element.text(Math.floor(progress)+'%');//Put text notation of progress inside the progressbar
+    }
   });
 }
 
@@ -176,9 +187,6 @@ function signinCallback(authResult) {
       
       //add google id to scan href/link. that way when scan returns scanned_data we have the users id
       $('#scan-button').attr('href', 'scan://scan?callback=https%3A%2F%2Froots-elementary.herokuapp.com/scanredirect/'+response.id);
-
-      // add google id to student schedule href
-      $('#schedule-button').attr('href', '/student-full-schedule/'+response.id).show();
 
       //get calendar events on signIn and send events/user to database in function above
       $('.scan-button').show();

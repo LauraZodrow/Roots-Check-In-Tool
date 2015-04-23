@@ -87,12 +87,36 @@ renderGoogleCalendar = function(calendar) {
   });
 };
 
-$(function() {
+function signinCallback(authResult) {
 
-  var id = _.last(window.location.pathname.split('/'))
-  // Get the user info
-  $.get('/api/user/' + id, function(student) {
-    renderGroveCalendar(student.groveCalendar);
-    renderGoogleCalendar(student.calendar);
+  if (authResult['status']['signed_in']) {
+    // Update the app to reflect a signed in user
+    // Hide the sign-in button now that the user is authorized, for example:
+    document.getElementById('signinButton').setAttribute('style', 'display: none');
+
+    //make call to google profile for users account information
+    gapi.client.request('https://www.googleapis.com/plus/v1/people/me?fields=name(familyName%2Cformatted%2CgivenName)%2CdisplayName%2Cemails%2Fvalue%2Cimage%2Furl%2Cid').execute(function(response) {
+
+
+      // Show the calendar container
+      $('#calendar-container').show();
+
+      // Get the user info and display the calendars
+      $.get('/api/user/' + response.id, function(student) {
+        renderGroveCalendar(student.groveCalendar);
+
+        // In case we want to display google calendar in the future...
+        // renderGoogleCalendar(student.calendar);
+      });
+
+
   });
-});
+  } else {
+    // Update the app to reflect a signed out user
+    // Possible error values:
+    //   "user_signed_out" - User is signed-out
+    //   "access_denied" - User denied access to your app
+    //   "immediate_failed" - Could not automatically log in the user
+    console.log('Sign-in state: ' + authResult['error']);
+  }
+}

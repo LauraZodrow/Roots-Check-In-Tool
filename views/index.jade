@@ -19,14 +19,16 @@ block meta
 		}
 
 block content
-	button#signinButton Sign in with Google
+	.row
+		.col-sm-offset-5.col-sm-2.text-center
+			button.btn.btn-info#signinButton(style="margin-top: 40vh")
+				i.fa.fa-google.fa-2x
+				|  Sign in with Google
 	.container
-		a#schedule-button.btn.btn-info.schedule-button(href='#', style='display:none')
-			i.fa.fa-table.fa-3x
 		#name
 
 		.progress.countDown
-			.progress-bar.progress-bar-danger.progress-bar-striped.active(style='width:0%')
+			.progress-bar.progress-bar-success.progress-bar-striped.active(style='width:0%')
 		.timer
 		if fail
 			.eventContainer.whoopsContainer

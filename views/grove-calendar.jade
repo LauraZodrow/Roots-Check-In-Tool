@@ -30,16 +30,15 @@ block content
 		.form-group
 			select.student-names-select.form-control#student-names-select(style={visibility: 'hidden'} multiple)
 
-		h2 Student Schedule
 		h4.student-title
 			span(id="student-icon")
-			span.text-muted(id="student-name")
+			strong(id="student-name")
+			span.text-muted(id="title-text")
 
 		div.calendar-container(id="calendar-container" style={display: 'none'})
 			table.table.table-striped
 				thead
 					tr
-						th Checked In
 						th Center
 						th Activity
 						th Focus Area
@@ -66,15 +65,11 @@ block content
 						label(for="focus_area") Focus Area
 						select.form-control(name="focus_area")
 							option(selected disabled) Choose a focus area...
-					.form-group
-						.col-sm-offset-2
-						div.checkbox
-							label
-								input(name="checkedIn" type="checkbox")
-								|Checked in
-					button.btn.btn-danger.btn-sm.pull-right(id="cancel-event-add") Done
+					button.btn.btn-danger.btn-sm.pull-right(id="cancel-event-add")
+						i.fa.fa-times
+						|  Close
 					button.btn.btn-success.btn-sm(id="add-event") 
 						i.fa.fa-plus
-						span(id='add-event-text')   Add Event
+						span(id='add-event-text')   Add Event to Cycle
 block scripts
 	script(src="/js/grove-calendar.js")

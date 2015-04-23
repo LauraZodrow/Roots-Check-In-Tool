@@ -1,5 +1,4 @@
 // Global variable students: array of all the student objects
-
 var students = [];
 
 // Function for resetting the event form
@@ -49,6 +48,7 @@ StudentGroveDisplay.prototype.renderEvents = function(containerTable) {
 StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 	// Change the title
 	$('#student-name').text(this.name);
+	$('#title-text').text("\'s Grove Cycle")
 	$('#student-icon').empty().append('<img class="student-icon" src="'+this.image+'">')
 
 	// Empty out the list if any events are in there, render the new events, then show the calendar
@@ -69,9 +69,9 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 		// Event handler for submitting
 		$('#add-event').on('click', function(e){
 			e.preventDefault();
+
 			// On submit, grab all the data, create a new EventDisplay object, push it into the student's event displays, and append it to the DOM
 			var newEvent = {};
-			newEvent.checkedIn = $("#activity-form input[name='checkedIn']")[0].checked;
 			var activity = $('#activity-form select[name="activity"]').val();
 			newEvent.location = activity.split('#')[0];
 			newEvent.activity = activity.split('#')[1];
@@ -83,7 +83,10 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 			newEvent.render('#events-list');
 
 			// Reset the form
-			resetForm(false, true)
+			resetForm(false, true);
+
+			// Enable the save button now that changes have been made
+			$('#save-calendar').removeClass('disabled');
 		});
 
 		// Event handler for canceling
@@ -93,12 +96,16 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 			resetForm(true)
 		});
 	});
+	
+	// Update the save calendar button to have disabled class and text of "Save Calendar" if it does not
+	$('#save-calendar').empty().append('<i class="fa fa-calendar"></i>   Save Grove Cycle').addClass('disabled');
 
 	// Update the event handler on the save calendar button to refer to this student
 	$('#save-calendar').off('click').on('click', function(event) {
-		$('#save-calendar').empty().text('Saving...').attr('disabled');
+		$('#save-calendar').empty().text('Saving...').addClass('disabled');
 
 		var calendar = self.eventDisplays.map(function(e) {
+			e.event.checkedIn = false;
 			return e.event;
 		});
 
@@ -107,7 +114,8 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 			data: JSON.stringify({calendar: calendar}),
 			contentType: 'application/json',
 			success: function() {
-				$('#save-calendar').empty().append('<i class="fa fa-calendar"></i>   Save Calendar').attr('disabled', false);
+				$('#save-calendar').empty().append('<i class="fa fa-calendar"></i>   Cycle Saved!');
+				
 			},
 			error: function(xhr, text, error) {
 				$('#save-calendar').empty().removeClass('btn-success').addClass('btn-danger').text('Error Saving');
@@ -129,13 +137,6 @@ EventDisplay.prototype.createDisplay = function() {
 	// Row item for the event
 	var row = '<tr></tr>';
 
-	// Checked in or not
-	var checkedIn = '<td></td>';
-	if (this.event.checkedIn) {
-		checkedIn = $(checkedIn).append('<i class="fa fa-check-circle">');
-	} else {
-		checkedIn = $(checkedIn).append('<i class="fa fa-circle-o">');
-	}
 	// Center
 	var location = $('<td></td>').text(this.event.location);
 
@@ -154,7 +155,7 @@ EventDisplay.prototype.createDisplay = function() {
 	remove = $(remove).append(this.removeButton);
 
 	// Append cells to the row
-	return $(row).append(checkedIn, location, activity, focus_area, edit, remove)[0];
+	return $(row).append(location, activity, focus_area, edit, remove)[0];
 };
 
 EventDisplay.prototype.render = function(container, replace) {
@@ -177,18 +178,12 @@ EventDisplay.prototype.render = function(container, replace) {
 		// Show the event form, fill in the defaults for this event, bind submission to changing this event
 		$('#activity-form select[name="activity"]').val(self.event.location+'#'+self.event.activity);
 		$('#activity-form select[name="focus_area"]').val(self.event.focus_area);
-		if (self.event.checkedIn) {
-			$('#activity-form input[name="checkedIn"]')[0].checked = true;
-		} else {
-			$('#activity-form input[name="checkedIn"]')[0].checked = false;
-		} 
 		$('#add-event-text').text('   Save');
 
 		$('#activity-form').show('fast', function(){
 			$('#add-event').off('click').one('click', function(e){
 				e.preventDefault();
 				// Update values for this event
-				self.event.checkedIn = $("#activity-form input[name='checkedIn']")[0].checked;
 				var activity = $('#activity-form select[name="activity"]').val();
 				if (activity) {
 					self.event.location = activity.split('#')[0];
@@ -201,10 +196,13 @@ EventDisplay.prototype.render = function(container, replace) {
 				self.event.focus_area = $('#activity-form select[name="focus_area"]').val();
 				
 				// Reset the form, unbind handlers, and hide it
-				resetForm(true)
+				resetForm(true);
 
 				// Render the element with replace set to true
-				self.render('#events-list', true)
+				self.render('#events-list', true);
+
+				// Enable the save calendar button now that changes have been made
+				$('#save-calendar').removeClass('disabled');
 			});
 
 			// Event handler for canceling

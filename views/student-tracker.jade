@@ -22,43 +22,16 @@ block content
 
 	h3.student-tracker-title Student Tracker
 	
-	.container
-		.btn-toolbar#filter-container
-			.btn-group
-				button.btn.btn-primary All
-			.btn-group
-				button.btn Lost
-			.btn-group#location-filters
-
-		#locations-container
+	.row
+		.col-sm-2
+			ul.nav.nav-pills.nav-stacked(style="position:fixed; top: 66px")#location-filters
+				li
+					button.btn.btn-warning.btn-block All
+				li
+					button.btn.btn-info.btn-block Lost
+		.col-sm-10#locations-container
 			#Lost
 				h2 Lost
-
-		//- #accordion.panel-group(role='tablist', aria-multiselectable='true')
-		//- 	.panel.panel-default.title-panel
-		//- 		#headingOne.panel-heading(role='tab')
-		//- 			a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
-		//- 				h4 Lost
-		//- 	#collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
-		//- 		.panel-body
-		//- 			#Lost
-		//- 	.panel.panel-default
-		//- 		#headingTwo.panel-heading(role='tab')
-		//- 			h4.panel-title
-		//- 				a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
-		//- 					h4 Maker Space
-		//- 	#collapseTwo.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingTwo')
-		//- 		.panel-body
-		//- 			#MakerSpace
-		//- 	.panel.panel-default
-		//- 		#headingThree.panel-heading(role='tab')
-		//- 			h4.panel-title
-		//- 				a.collapsed(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
-		//- 					h4 Library
-		//- 	#collapseThree.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingThree')
-		//- 		.panel-body
-		//- 			#Library
-	
 
 block scripts
 	script(src='/js/lost-kids.js')

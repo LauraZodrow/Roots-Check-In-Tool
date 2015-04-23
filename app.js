@@ -44,7 +44,7 @@ app.get('/student-tracker', function(req, res) {
 });
 
 // Student Full schedule 
-app.get('/student-full-schedule/:id', indexController.studentFullSchedule);
+app.get('/student-full-schedule', indexController.studentFullSchedule);
 
 //API Routes
 app.post('/api/user', googleController.saveUser);
