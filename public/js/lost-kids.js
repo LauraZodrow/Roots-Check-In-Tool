@@ -174,7 +174,7 @@ $(function(){
 
 		// Create the container for the students
 		// Title is just the location, the container id needs to have spaces removed
-		var title = $('<h2></h2>').text(prettyDisplay);
+		var title = $('<h3>').text(prettyDisplay);
 		var container = $('<div></div>').attr('id', prettyDisplay.split(' ').join('')).append(title);
 		$('#locations-container').append(container);
 	});
