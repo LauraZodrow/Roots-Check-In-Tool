@@ -53,6 +53,7 @@ app.get('/api/user/:id', apiController.getUser);
 app.get('/api/grove/:user_id', apiController.getGroveCalendar);
 app.put('/api/grove/:user_id', apiController.updateGroveCalendar);
 app.get('/api/grove', apiController.listGroveCalendars);
+app.get('/current-event/:user_id', apiController.getCurrentEvent)
 
 
 // io.listen(app);

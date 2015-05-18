@@ -91,7 +91,7 @@ button {
 
 .Lost {
 	border:#ED0802 solid 3px;
-	width:25%;
+	width:20%;
 	text-align:center;
 	margin:7px;
 	border-radius:7px;
@@ -106,7 +106,7 @@ button {
 
 .Found {
 	border:#8BAB42 solid 3px;
-	width:25%;
+	width:20%;
 	text-align:center;
 	margin:7px;
 	border-radius:7px;
@@ -152,7 +152,7 @@ button {
 }
 
 .studentImage {
-	width:90px;
+	width:80px;
 	height:auto;
 }
 

@@ -75,9 +75,19 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 	}
 	// If the student has not scanned in recently, do not display the last scan information
 	else {
-		this.el.removeClass('Found').addClass('Lost');
-		var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
-		this.el.find('.studentInfoContainer').empty().append(message);
+		var self = this;
+
+		// Call the API endpoint to get current event without a scan
+		$.get('/current-event/' + this.data.googleId, function(result) {
+			self.el.removeClass('Found').addClass('Lost');
+			var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
+			if(result.location) {
+				var correction = $('<p>').addClass('correct-location-info').text('Should be at: ' + result.location);
+			} else {
+				var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
+			}
+			self.el.find('.studentInfoContainer').empty().append(message, correction);
+		});
 	}
 };
 

@@ -5,6 +5,27 @@ var _ = require('lodash');
 var moment = require('moment');
 var async = require('async');
 
+// Helper function to get the current event for a student
+function getCurrentEvent(user, scanned_data) {
+	//find event in collection that is between event start time minus 5 min and event end time
+	var currentEvent = _.find(user.calendar, function(event) {
+		return moment().isBetween(moment(event.start).subtract(5, 'minutes'), event.end);
+	});
+
+	// if there's not a current google calendar event, get the next grove calendar event, and if the scan matches the correct event, change the calendar to indicate that the student has checked in
+	if (!currentEvent) {
+		var index = _.findIndex(user.groveCalendar, function(event) {
+			return !event.checkedIn; 
+		});
+		currentEvent = user.groveCalendar[index]
+		if (scanned_data && currentEvent.location === scanned_data) {
+			user.groveCalendar[index].checkedIn = true;
+		}
+	}
+
+	return currentEvent;
+}
+
 var apiController = {
 
 	// Return all users
@@ -44,21 +65,8 @@ var apiController = {
 				}
 				else {
 					var correct;
-					//find event in collection that is between event start time minus 5 min and event end time
-					var currentEvent = _.find(user.calendar, function(event) {
-						return moment(currentTime).isBetween(moment(event.start).subtract(5, 'minutes'), event.end);
-					});
-
-					// if there's not a current google calendar event, get the next grove calendar event, and if the scan matches the correct event, change the calendar to indicate that the student has checked in
-					if (!currentEvent) {
-						var index = _.findIndex(user.groveCalendar, function(event) {
-							return !event.checkedIn; 
-						});
-						currentEvent = user.groveCalendar[index]
-						if (currentEvent.location === scanned_data) {
-							user.groveCalendar[index].checkedIn = true;
-						}
-					}
+					
+					var currentEvent = getCurrentEvent(user, scanned_data);
 					
 					// Set correctness
 					correct = (currentEvent.location === scanned_data);
@@ -106,11 +114,24 @@ var apiController = {
 		}
 	},
 
+	// Get current event for a user
+	getCurrentEvent: function(req, res) {
+		User.findOne({googleId: req.params.user_id}, function(err, user) {
+			if (err) {
+				console.error(err);
+				res.send(err);
+			} else {
+				res.send(getCurrentEvent(user));
+			}
+		})
+	},
+
 	// Return grove calendar for one student
 	getGroveCalendar: function(req, res) {
 		User.findOne({googleId: req.params.user_id}, function(err, user) {
 			if (err) {
 				console.error(err);
+				res.send(err);
 			} else {
 				res.send(user.groveCalendar);
 			}
