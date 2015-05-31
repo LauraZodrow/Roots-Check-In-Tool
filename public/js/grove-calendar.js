@@ -44,6 +44,31 @@ StudentGroveDisplay.prototype.renderEvents = function(containerTable) {
 	});
 };
 
+// When the list is re-sorted through drag and drop, update all the indices
+StudentGroveDisplay.prototype.updateSort = function(e, ui) {
+
+	var self = this;
+
+	// First, grab the updated list of indices, stored in the data-index attribute, and create a copy of the student's array of events
+	var indices = $('#events-list').sortable("toArray", { attribute: 'data-index' });
+	var tempDisplays  = _.cloneDeep(this.eventDisplays);
+
+	// Now iterate through each index, and update the orders
+	indices.forEach(function(data_index, order) {
+		if (data_index != order) {
+			self.eventDisplays[data_index].index = order;
+			$(self.eventDisplays[data_index].el).attr('data-index', order)
+		}
+	});
+
+	this.eventDisplays = _.sortBy(this.eventDisplays, 'index');
+
+	// Enable the save button now that changes have been made, change the text to "Save Calendar" if not already done
+	$('#save-calendar').removeClass('disabled').empty().append('<i class="fa fa-calendar"></i>   Save Grove Cycle');
+
+	console.log('eD:', this.eventDisplays);
+}
+
 // Render the events into the calendar table
 StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 	// Change the title
@@ -51,13 +76,16 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 	$('#title-text').text("\'s Grove Cycle")
 	$('#student-icon').empty().append('<img class="student-icon" src="'+this.image+'">')
 
-	// Empty out the list if any events are in there, render the new events, then show the calendar
+	// Empty out the list if any events are in there, render the new events, then show calendar and make table sortable
 	$(containerId).empty();
 	this.renderEvents(containerId);
 
-	// Attach the add event button handlers, bound to this student
 	var self = this;
+
 	$('#calendar-container').show();
+	$('#events-list').sortable({
+		stop: self.updateSort.bind(self)
+	});
 
 	// Make the new event button show the form and attach the proper event handler to it
 	$('#create-new-event').off('click').on('click', function(event){
@@ -85,8 +113,8 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 			// Reset the form
 			resetForm(false, true);
 
-			// Enable the save button now that changes have been made
-			$('#save-calendar').removeClass('disabled');
+			// Enable the save button now that changes have been made, change the text to "Save Calendar" if not already done
+			$('#save-calendar').removeClass('disabled').empty().append('<i class="fa fa-calendar"></i>   Save Grove Cycle');
 		});
 
 		// Event handler for canceling
@@ -97,7 +125,7 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 		});
 	});
 	
-	// Update the save calendar button to have disabled class and text of "Save Calendar" if it does not
+	// Update the save calendar button to have disabled class and text of "Save Calendar"
 	$('#save-calendar').empty().append('<i class="fa fa-calendar"></i>   Save Grove Cycle').addClass('disabled');
 
 	// Update the event handler on the save calendar button to refer to this student
@@ -118,7 +146,7 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 				
 			},
 			error: function(xhr, text, error) {
-				$('#save-calendar').empty().removeClass('btn-success').addClass('btn-danger').text('Error Saving');
+				$('#save-calendar').empty().removeClass('btn-success').addClass('btn-danger').text('Error Saving').removeClass('disabled');
 			}
 		});
 	});
@@ -155,7 +183,7 @@ EventDisplay.prototype.createDisplay = function() {
 	remove = $(remove).append(this.removeButton);
 
 	// Append cells to the row
-	return $(row).append(location, activity, focus_area, edit, remove)[0];
+	return $(row).attr('data-index', this.index).append(location, activity, focus_area, edit, remove)[0];
 };
 
 EventDisplay.prototype.render = function(container, replace) {
@@ -207,8 +235,9 @@ EventDisplay.prototype.render = function(container, replace) {
 
 			// Event handler for canceling
 			$('#cancel-event-add').on('click', function(e){
+				e.preventDefault();
 				// Reset the form and hide it
-				resetForm(true)
+				resetForm(true);
 			});
 		});
 	});
