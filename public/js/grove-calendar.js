@@ -1,6 +1,31 @@
 // Global variable students: array of all the student objects
 var students = [];
 
+// Load the FOCUS_AREA options for initializing the select2, allowing teachers to input new focus areas if desired
+var FOCUS_AREA_OPTIONS = _.chain(FOCUS_AREAS).keys().sortBy().value().map( function(fa) {
+	return {
+		id: fa,
+		text: fa
+	};
+});
+
+// Helper function for adding to FOCUS_AREA_OPTIONS
+function addToFocus(focus_area) {
+	// Check if the focus_area already exists in the list, otherwise add it
+	if (!_.findWhere(FOCUS_AREA_OPTIONS, {id: focus_area})) {
+		FOCUS_AREA_OPTIONS = FOCUS_AREA_OPTIONS.concat({
+			id: focus_area,
+			text: focus_area
+		});
+
+		$('select[name="focus_area"]').select2({
+			data: FOCUS_AREA_OPTIONS,
+			tags: true,
+			width: 'style'
+		});
+	}
+}
+
 // Function for resetting the event form
 function resetForm(hideForm, retainSubmit){
 	$('#add-event-text').text('   Add Event');
@@ -41,6 +66,9 @@ StudentGroveDisplay.prototype.renderOption = function(selectId){
 StudentGroveDisplay.prototype.renderEvents = function(containerTable) {
 	_.each(this.eventDisplays, function(d) {
 		d.render(containerTable);
+
+		// Add any custom focus areas to the FOCUS_AREA_OPTIONS
+		addToFocus(d.event.focus_area);
 	});
 };
 
@@ -100,13 +128,19 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 			var activity = $('#activity-form select[name="activity"]').val();
 			newEvent.location = activity.split('#')[0];
 			newEvent.activity = activity.split('#')[1];
-			newEvent.focus_area = $('#activity-form select[name="focus_area"]').val();
+
 			var index = self.eventDisplays.length;
 			
-			newEvent = new EventDisplay(self, newEvent, index)
-			self.eventDisplays.push(newEvent);
-			newEvent.render('#events-list');
+			var focus_area = $('#activity-form select[name="focus_area"]').val();
+			newEvent.focus_area = focus_area
+			addToFocus(focus_area);
+			
+			newEvent = new EventDisplay(self, newEvent, index);
 
+			self.eventDisplays.push(newEvent);
+
+			newEvent.render('#events-list');
+			
 			// Reset the form
 			resetForm(false, true);
 
@@ -158,6 +192,7 @@ var EventDisplay = function(student, event, index) {
 	this.el = this.createDisplay();
 };
 
+// Creates the display element
 EventDisplay.prototype.createDisplay = function() {
 	// Row item for the event
 	var row = '<tr></tr>';
@@ -183,6 +218,7 @@ EventDisplay.prototype.createDisplay = function() {
 	return $(row).attr('data-index', this.index).append(location, activity, focus_area, edit, remove)[0];
 };
 
+// Renders the display element
 EventDisplay.prototype.render = function(container, replace) {
 	
 	// Create a new variable pointing to this particular event display so we can reference it in the edit and remove events
@@ -202,7 +238,7 @@ EventDisplay.prototype.render = function(container, replace) {
 	$(this.editButton).click(function(e) {
 		// Show the event form, fill in the defaults for this event, bind submission to changing this event
 		$('#activity-form select[name="activity"]').val(self.event.location+'#'+self.event.activity);
-		$('#activity-form select[name="focus_area"]').val(self.event.focus_area);
+		$('#activity-form select[name="focus_area"]').select2('val', self.event.focus_area);
 		$('#add-event-text').text('   Save');
 
 		$('#activity-form').show('fast', function(){
@@ -218,7 +254,10 @@ EventDisplay.prototype.render = function(container, replace) {
 					self.event.location = '';
 					self.event.activity = '';
 				}
-				self.event.focus_area = $('#activity-form select[name="focus_area"]').val();
+
+				var focus_area = $('#activity-form select[name="focus_area"]').val();
+				self.event.focus_area = focus_area;
+				addToFocus(focus_area);
 				
 				// Reset the form, unbind handlers, and hide it
 				resetForm(true);
@@ -267,17 +306,10 @@ $(function(){
 		$('select[name="activity"]').append(group);
 	});
 
-	// Load the FOCUS_AREA options and create the select2, allowing teachers to input new focus areas if desired
-	var focus_area_options = _.chain(FOCUS_AREAS).keys().sortBy().value().map( function(fa) {
-		return {
-			id: fa,
-			text: fa
-		};
-	});
-
-	$('select[name="focus_area"]').select2({
-		data: focus_area_options,
-		tags: true
+	$('select[name="focus_area"]').css('width', '100%').select2({
+		data: FOCUS_AREA_OPTIONS,
+		tags: true,
+		width: 'style'
 	});
 
 	// Get all students
