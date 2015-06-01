@@ -166,6 +166,8 @@ button {
 	width:180px;
 }
 
+/* Grove calendar display */
+
 #groveCalendar .activity-image{
 	width:65px;
 }
@@ -209,4 +211,16 @@ button {
 #scan-button {
 	color:#fff;
 	text-decoration: none;
+}
+
+.activity-form {
+	margin-top: 30px;
+}
+
+.activity-form label {
+	margin-top: 10px;
+}
+
+.activity-form button {
+	margin-top: 20px;
 }

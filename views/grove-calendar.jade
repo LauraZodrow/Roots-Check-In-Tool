@@ -1,4 +1,7 @@
-extends layout 
+extends layout
+
+block stylesheets
+	link(href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet")
 
 block content
 	nav.navbar.navbar-default(role='navigation')
@@ -58,19 +61,24 @@ block content
 				fieldset
 					legend(id="activity-legend")
 					.form-group
-						label(for="activity") Activity
-						select.form-control(name="activity")
-							option(selected disabled) Choose an activity...
+						.col-xs-12.col-sm-6.col-md-4
+							label(for="activity") Activity
+							select.form-control(name="activity")
+								option(selected disabled) Choose an activity...
 					.form-group
-						label(for="focus_area") Focus Area
-						select.form-control(name="focus_area")
-							option(selected disabled) Choose a focus area...
-					button.btn.btn-danger.btn-sm.pull-right(id="cancel-event-add")
-						i.fa.fa-times
-						|  Close
-					button.btn.btn-success.btn-sm(id="add-event") 
-						i.fa.fa-plus
-						span(id='add-event-text')   Add Event to Cycle
+						.col-xs-12
+							label(for="focus_area") Focus Area
+						.col-xs-12
+							select(name="focus_area")
+								option(selected disabled) Choose a focus area...
+					.col-xs-12
+						button.btn.btn-danger.btn-sm.pull-right(id="cancel-event-add")
+							i.fa.fa-times
+							|  Close
+						button.btn.btn-success.btn-sm(id="add-event") 
+							i.fa.fa-plus
+							span(id='add-event-text')   Add Event to Cycle
 block scripts
 	script(src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js")
+	script(src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js")
 	script(src="/js/grove-calendar.js")

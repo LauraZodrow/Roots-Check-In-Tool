@@ -6,7 +6,7 @@ renderProgressBar = function(eventStart){
 
   $('.timer').countdown({  
     start_time: currentTime, //Time when the progress bar is at 0%
-    end_time: eventStart || currentTime, //Time Progress bar is at 100% and timer runs out
+    end_time: eventStart || currentTime.add(1, ms), //Time Progress bar is at 100% and timer runs out, when no eventStart is passed for end_time, use current time with 1 added ms to trigger onComplete and update_progress
     progress: $('.progress-bar'), //There dom element which should display the progressbar.
     onComplete: function() {
       $('.timer').show();

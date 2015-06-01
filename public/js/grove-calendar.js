@@ -257,20 +257,27 @@ $(function(){
 	// Load up the grove calendar options from CONFIG.js
 	// The keys of GROVE_ACTIVITIES are the different centers
 	_.keys(GROVE_ACTIVITIES).forEach( function(center) {
-		var group = $('<optgroup label="' + center + '"></optgroup>');
+		var group = $('<optgroup>').attr('label', center);
 
 		// For each center, take all the activities and add an option
 		GROVE_ACTIVITIES[center].forEach( function(activity) {
-			var option = $('<option></option>').attr('value', [center, activity].join('#')).text(activity);
+			var option = $('<option>').attr('value', [center, activity].join('#')).text(activity);
 			group.append(option);
 		});
 		$('select[name="activity"]').append(group);
 	});
 
-	// Load the FOCUS_AREA options, the keys are the different options
-	_.chain(FOCUS_AREAS).keys().sortBy().value().forEach( function(fa) {
-		var option = $('<option></option>').attr('value', fa).text(fa);
-		$('select[name="focus_area"]').append(option);
+	// Load the FOCUS_AREA options and create the select2, allowing teachers to input new focus areas if desired
+	var focus_area_options = _.chain(FOCUS_AREAS).keys().sortBy().value().map( function(fa) {
+		return {
+			id: fa,
+			text: fa
+		};
+	});
+
+	$('select[name="focus_area"]').select2({
+		data: focus_area_options,
+		tags: true
 	});
 
 	// Get all students
