@@ -65,8 +65,6 @@ StudentGroveDisplay.prototype.updateSort = function(e, ui) {
 
 	// Enable the save button now that changes have been made, change the text to "Save Calendar" if not already done
 	$('#save-calendar').removeClass('disabled').empty().append('<i class="fa fa-calendar"></i>   Save Grove Cycle');
-
-	console.log('eD:', this.eventDisplays);
 }
 
 // Render the events into the calendar table
@@ -92,7 +90,6 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 		// Update the form legend and show it
 		$('#activity-legend').text('New event for: ' + self.name);
 		$('#activity-form').show('fast');
-		$('#calendar-button-container').hide('fast');
 
 		// Event handler for submitting
 		$('#add-event').on('click', function(e){

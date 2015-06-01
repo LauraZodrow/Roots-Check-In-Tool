@@ -178,14 +178,14 @@ $(function(){
 		}).join(' ');
 
 		// Create the button and add it to button group
-		var button = $('<button class="btn btn-info btn-block"></button>').text(prettyDisplay);
-		var listItem = $('<li>').append(button)
+		var button = $('<button>').addClass('btn btn-info btn-block').text(prettyDisplay);
+		var listItem = $('<li>').append(button);
 		$('#location-filters').append(listItem);
 
 		// Create the container for the students
 		// Title is just the location, the container id needs to have spaces removed
 		var title = $('<h3>').text(prettyDisplay);
-		var container = $('<div></div>').attr('id', prettyDisplay.split(' ').join('')).append(title);
+		var container = $('<div>').addClass('row').attr('id', prettyDisplay.split(' ').join('')).append(title);
 		$('#locations-container').append(container);
 	});
 
@@ -218,9 +218,22 @@ $(function(){
 
 	$.get('api/user', function(students) {
 		studentsArray = _.map(students, function(student) {
-			studentInstance = new StudentLocationDisplay(student);
-			return studentInstance;
+			return new StudentLocationDisplay(student);
 		});
+
+		// Put in a slight display for student panels to display, then set them all to same height
+
+		window.setTimeout(function(){
+			var displays = $('.studentLocationDisplay');
+
+			var heights = displays.map(function() {
+				return $(this).height()
+			});
+
+			var maxHeight = Math.max.apply(null, heights);
+
+			displays.height(maxHeight);
+		}, 500);
 	});
 
 });

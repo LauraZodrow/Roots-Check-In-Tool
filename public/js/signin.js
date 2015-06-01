@@ -1,3 +1,4 @@
+// Renders the progress bar at the top of page, using the start time of the student's next (or current) event.
 renderProgressBar = function(eventStart){
   $('.countDown').show();
 
@@ -5,7 +6,7 @@ renderProgressBar = function(eventStart){
 
   $('.timer').countdown({  
     start_time: currentTime, //Time when the progress bar is at 0%
-    end_time: eventStart, //Time Progress bar is at 100% and timer runs out
+    end_time: eventStart || currentTime, //Time Progress bar is at 100% and timer runs out
     progress: $('.progress-bar'), //There dom element which should display the progressbar.
     onComplete: function() {
       $('.timer').show();
@@ -28,23 +29,23 @@ renderProgressBar = function(eventStart){
 // Render a location image
 renderLocationImage = function(eventLocation, eventActivity, eventCreator, focusArea) {
 
-  $('#locationImage').append(LOCATION_IMAGES[eventLocation.toLowerCase()]);
+  $('#locationImage').append( LOCATION_IMAGES[eventLocation.toLowerCase()] );
   $('#locationText').append(eventLocation);
 
   // Check if the event activity has an icon, otherwise it is a description and use GET_ACTIVITY
   if (ACTIVITY_IMAGES[eventActivity.toLowerCase()]) {
-    $('#activityImage').append(ACTIVITY_IMAGES[eventActivity.toLowerCase()]);
+    $('#activityImage').append( ACTIVITY_IMAGES[eventActivity.toLowerCase()] );
   } else {
-    $('#activityImage').append(GET_ACTIVITY(eventActivity));
+    $('#activityImage').append( GET_ACTIVITY(eventActivity) );
   }
 
   $('#activityText').append(eventActivity);
 
   if (eventCreator) {
-    $('#creatorImage').append(CREATOR_IMAGES[eventCreator]);
+    $('#creatorImage').append( CREATOR_IMAGES[eventCreator] );
     $('#creatorText').append(eventCreator);
   } else if (focusArea) {
-    $('#creatorImage').append(FOCUS_AREAS[focusArea]);
+    $('#creatorImage').append( FOCUS_AREAS[focusArea] );
     $('#creatorText').append(focusArea);
   }
 }
@@ -70,10 +71,10 @@ renderGroveCalendar = function(numEvents, userData) {
           data: JSON.stringify({calendar: calendar}),
           contentType: 'application/json',
           success: function() {
-            // TODO
+            // Do we need to do anything here?
           },
           error: function(xhr, text, error) {
-            // TODO
+            // Do we need to do anything here?
           }
         });
       }
@@ -139,6 +140,9 @@ function getCalendar(userData){
         if (currentEvent) {
           // Render location for current event
           renderLocationImage(currentEvent.location, currentEvent.summary, currentEvent.creator);
+
+          // Render progress bar as full by not passing start time
+          renderProgressBar();
         } 
         // If there's not a current event, show the next event
         else if (nextEvent) {
