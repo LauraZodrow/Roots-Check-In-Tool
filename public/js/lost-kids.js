@@ -145,10 +145,10 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var end_times = [];
 			var now = moment( new Date() );
 			var hour_start = moment( new Date() ).startOf('hour');
-			
+
 			// Create an array of all end times for this hour
 			for (var i =1; i<=intervals; i++) {
-				end_times.push(hour_start).add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms'));
+				end_times.push( hour_start.add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms') );
 			}
 			// Event ends at the first end time after this check-in
 			var event_end = _.find(end_times, function(t) {
