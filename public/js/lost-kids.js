@@ -70,7 +70,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 		var info = $('<p>').addClass('last-scan-info').addClass('text-primary').text(text);
 
-		this.el.find('.studentInfoContainer').empty();
+		this.el.find('.studentInfoContainer').empty().append(info);
 		this.el.removeClass('Lost').addClass('Found');
 	}
 	// If the student is in the wrong location, display the scan information
@@ -93,7 +93,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 		$.get('/current-event/' + this.data.googleId, function(result) {
 			self.el.removeClass('Found').addClass('Lost');
 			var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
-			if(result.location) {
+			if(result && result.location) {
 				var correction = $('<p>').addClass('correct-location-info').addClass('text-primary').text(result.location);
 			} else {
 				var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
