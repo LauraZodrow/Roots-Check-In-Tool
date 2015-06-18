@@ -147,22 +147,19 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var end_times = [];
 			var hour_start;
 
-			// Create an array of all end times for this hour
-			// First time period is the event length, subtracting time for transition (e.g. a 10 minute event with 2 minutes to get to the next event would end at 12:08, next event ends at 12:18, etc)
+			// Create an array of all times we will auto-move the student at. (e.g. if event length is 10 minutes, we move the student when the next event would be starting, 12:10, 12:20, etc)
 			for (var i =1; i<=intervals; i++) {
 				// re-initiate the start of hour so that the reference does not get overriden
 				hour_start = moment( new Date() ).startOf('hour');
-				end_times.push( hour_start.add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms') );
+				end_times.push( hour_start.add(i * EVENT_LENGTH, 'ms') );
 			}
-			console.log('end times:', _.map(end_times, function(t) { return t.format('L h:mm a');}));
 			// Event ends at the first end time after this check-in
 			var event_end = _.find(end_times, function(t) {
 				return t.isAfter(now);
 			});
 			// Push student into lost after event ends and transition time has lapsed
-			var difference = event_end.add(TRANSITION_LENGTH, 'ms').diff(now);
+			var difference = event_end.diff(now);
 		}
-		console.log('Times:', now.format('L h:mm a'), hour_start.format('L h:mm a'), event_end.format('L h:mm a'), difference);
 		this.transitionTimeout = window.setTimeout( self.moveMe.bind(self, null), difference);
 	}
 	// If the scan does not match the location, the student is in the wrong location
@@ -182,13 +179,9 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
 var scanReceived = function(scan) {
 
-	console.log('Scan:', scan);
-
 	var scanStudent = _.find(studentsArray, function(student) {
 		return student.data.googleId === scan.googleId;
 	});
-
-	console.log('scanStudent:', scanStudent);
 
 	// If a student is found, move the student and override their recent scan
 	if (scanStudent) {
