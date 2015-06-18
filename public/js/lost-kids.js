@@ -59,7 +59,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 	if (this.status === 'Found') {
 		var scannedEvent = this.recentScan.event[0];
-		var text = _(['location', 'activity', 'focus_area'])
+		var text = _.chain(['location', 'activity', 'focus_area'])
 			.map(function(key) {
 				return scannedEvent[key];
 			})
@@ -142,16 +142,15 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		this.status = 'Wrong Location';
 		
 	}
-	// If there is no scan
+	// If there is no scan, this method is being triggered by the timeout, meaning the student has not scanned in to anywhere on time and is lost
 	else {
 		this.status = 'Lost';
 		this.currentLocation = 'Lost';
 	}
-	// Optional logic to change this.el based on status
 	this.render();
 }
 
-StudentLocationDisplay.prototype.render = function() {
+StudentLocationDisplay.prototype.render = function render() {
 	// render into the domnode based on where their location is
 	var location;
 	if (this.status === 'Found') {
@@ -167,14 +166,17 @@ StudentLocationDisplay.prototype.render = function() {
 
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
 var scanReceived = function(scan) {
+
+	console.log('Scan:', scan);
+
 	var scanStudent = _.find(studentsArray, function(student) {
 		return student.data.googleId === scan.googleId;
 	});
+
+	console.log('Scan student:', scanStudent);
 	// If a student is found, move the student and override their recent scan
 	if (scanStudent) {
-		if (scanStudent.transitionTimeout) {
-			window.clearTimeout(transitionTimeout);
-		}
+		if (scanStudent.transitionTimeout) { window.clearTimeout(scanStudent.transitionTimeout); }
 		scanStudent.recentScan = scan;
 		scanStudent.moveMe(scan);
 	}
