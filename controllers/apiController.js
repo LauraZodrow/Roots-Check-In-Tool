@@ -132,6 +132,8 @@ var apiController = {
 			if (err) {
 				console.error(err);
 				res.send(err);
+			} else if (!user) {
+				res.send(new Error('User not found!'));
 			} else {
 				res.send(user.groveCalendar);
 			}

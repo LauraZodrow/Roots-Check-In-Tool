@@ -81,7 +81,7 @@ renderGroveCalendar = function(numEvents, userData) {
       
       var nextEvent = calendar[nextEventIndex];
 
-      renderLocationImage(nextEvent.location, nextEvent.activity, null, nextEvent.focus_area);
+      if (nextEvent) renderLocationImage(nextEvent.location, nextEvent.activity, null, nextEvent.focus_area);
   });
 }
 
@@ -94,7 +94,7 @@ function getCalendar(userData){
   //get users google calendar events starting with today
   gapi.client.request('https://www.googleapis.com/calendar/v3/calendars/' + userData.email + '/events/?singleEvents=true&timeMin=' + start + '&timeMax=' + end + '&orderBy=startTime').execute(function(response) {
 
-        var currentTime = moment();
+        var currentTime = moment( new Date() );
 
         //loop through all events in user's google calendar
         var events = _.map(response.items, function(event){
