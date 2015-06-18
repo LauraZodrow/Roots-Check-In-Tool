@@ -137,13 +137,13 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		this.status = 'Found';
 		// Set a timeout based on the end of the event, and move the student to Lost after the event is over as a placeholder until they scan into another event
 		// To check end of event, see whether there is a start and end defined on the event (in which case it came from Google calender) or not (in which case it came from Grove, and we will use the EVENT_LENGTH and TRANSITION_LENGTH config option)
+		var now = moment( new Date() );
 		if (scan.event.end) {
-			var difference = moment(scan.event.end).diff(moment());
+			var difference = moment(scan.event.end).diff( now );
 		}
 		else {
 			var intervals = 60 / (EVENT_LENGTH / (60 * 1000));
 			var end_times = [];
-			var now = moment( new Date() );
 			var hour_start = moment( new Date() ).startOf('hour');
 
 			// Create an array of all end times for this hour
@@ -157,6 +157,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			// Push student into lost after event ends and transition time has lapsed
 			var difference = event_end.add(TRANSITION_LENGTH, 'minutes').diff(now);
 		}
+		console.log('Times:', now, hour_start, event_end, difference);
 		this.transitionTimeout = window.setTimeout(self.moveMe.bind(self, null), difference);
 	}
 	// If the scan does not match the location, the student is in the wrong location
