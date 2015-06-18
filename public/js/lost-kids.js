@@ -158,7 +158,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var difference = event_end.add(TRANSITION_LENGTH, 'minutes').diff(now);
 		}
 		console.log('Times:', now, hour_start, event_end, difference);
-		this.transitionTimeout = window.setTimeout(self.moveMe.bind(self, null), difference);
+		this.transitionTimeout = window.setTimeout(function() { self.moveMe() }, difference);
 	}
 	// If the scan does not match the location, the student is in the wrong location
 	else if (scan) {
