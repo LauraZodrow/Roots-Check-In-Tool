@@ -147,10 +147,14 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var hour_start = moment( new Date() ).startOf('hour');
 
 			// Create an array of all end times for this hour
-			for (var i =1; i<=intervals; i++) {
-				end_times.push( hour_start.add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms') );
+			// First time period is the event length, subtracting time for transition (e.g. a 10 minute event with 2 minutes to get to the next event would end at 12:08, next event ends at 12:18, etc)
+			end_times.push( hour_start.add(EVENT_LENGTH - TRANSITION_LENGTH, 'ms') );
+			
+			for (var i =2; i<=intervals; i++) {
+				// each run through, add one more event length period
+				end_times.push( hour_start.add(EVENT_LENGTH, 'ms') );
 			}
-			console.log('end times:', _.map(end_times, function(t) { return t.format('L, h:mm a');}));
+			console.log('end times:', _.map(end_times, function(t) { return t.format('L h:mm a');}));
 			// Event ends at the first end time after this check-in
 			var event_end = _.find(end_times, function(t) {
 				return t.isAfter(now);
@@ -158,7 +162,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			// Push student into lost after event ends and transition time has lapsed
 			var difference = event_end.add(TRANSITION_LENGTH, 'ms').diff(now);
 		}
-		console.log('Times:', now.format('L, , h:mm a'), hour_start.format('L, , h:mm a'), event_end.format('L, h:mm a'), difference);
+		console.log('Times:', now.format('L h:mm a'), hour_start.format('L h:mm a'), event_end.format('L h:mm a'), difference);
 		this.transitionTimeout = window.setTimeout(function() { self.moveMe() }, difference);
 	}
 	// If the scan does not match the location, the student is in the wrong location
