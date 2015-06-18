@@ -177,7 +177,8 @@ var scanReceived = function(scan) {
 	if (scanStudent) {
 		if (scanStudent.transitionTimeout) { window.clearTimeout(scanStudent.transitionTimeout); }
 		scanStudent.recentScan = scan;
-		scanStudent.moveMe(scan);
+		// Call the moveMe function, making sure it is bound to the current student
+		scanStudent.moveMe.call(scanStudent, scan);
 	}
 };
 
