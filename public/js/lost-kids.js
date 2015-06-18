@@ -143,16 +143,19 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		else {
 			var intervals = 60 / (EVENT_LENGTH / (60 * 1000));
 			var end_times = [];
+			var now = moment( new Date() );
+			var hour_start = moment( new Date() ).startOf('hour');
+			
 			// Create an array of all end times for this hour
 			for (var i =1; i<=intervals; i++) {
-				end_times.push(moment().startOf('hour').add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms'));
+				end_times.push(hour_start).add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms'));
 			}
 			// Event ends at the first end time after this check-in
 			var event_end = _.find(end_times, function(t) {
-				return t.isAfter(moment());
+				return t.isAfter(now);
 			});
 			// Push student into lost after event ends and transition time has lapsed
-			var difference = event_end.add(TRANSITION_LENGTH, 'minutes').diff(moment());
+			var difference = event_end.add(TRANSITION_LENGTH, 'minutes').diff(now);
 		}
 		this.transitionTimeout = window.setTimeout(self.moveMe.bind(self, null), difference);
 	}
