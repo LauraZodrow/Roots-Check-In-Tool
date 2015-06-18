@@ -102,6 +102,20 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 	}
 };
 
+StudentLocationDisplay.prototype.render = function() {
+	// render into the domnode based on where their location is
+	var location;
+	if (this.status === 'Found') {
+		location = this.currentLocation
+	} else {
+		location = 'Lost';
+	}
+
+	var locationId = location.split(' ').join('');
+	this.updateDisplay();
+	$('#'+locationId).append(this.el);
+}
+
 // Move the student to a new location based on the most recent scan
 StudentLocationDisplay.prototype.moveMe = function(scan) {
 	// move from one array to another
@@ -150,30 +164,13 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 	this.render();
 }
 
-StudentLocationDisplay.prototype.render = function render() {
-	// render into the domnode based on where their location is
-	var location;
-	if (this.status === 'Found') {
-		location = this.currentLocation
-	} else {
-		location = 'Lost';
-	}
-
-	var locationId = location.split(' ').join('');
-	this.updateDisplay();
-	$('#'+locationId).append(this.el);
-}
-
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
 var scanReceived = function(scan) {
-
-	console.log('Scan:', scan);
 
 	var scanStudent = _.find(studentsArray, function(student) {
 		return student.data.googleId === scan.googleId;
 	});
 
-	console.log('Scan student:', scanStudent);
 	// If a student is found, move the student and override their recent scan
 	if (scanStudent) {
 		if (scanStudent.transitionTimeout) { window.clearTimeout(scanStudent.transitionTimeout); }
