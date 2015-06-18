@@ -8,8 +8,8 @@ var StudentLocationDisplay = function(student) {
 	this.data = _.pick(student, ['_id', 'email','name','image','googleId']);
 	
 	// Create the DOM element representing the student
-	var display = $('<div class="studentLocationDisplay" id="'+student.googleId+'"></div>');
-	var container = $('<div class="nameImageContainer"></div>');
+	var display = $('<div>').addClass('studentLocationDisplay').addClass('col-md-2').attr('id', student.googleId);
+	var container = $('<div>').addClass('nameImageContainer');
 	container
 		.append('<div class="name">' + student.name + '</div>')
 		.append('<div><img class="studentImage" src="' +student.image+'"></div>');
@@ -58,6 +58,17 @@ var StudentLocationDisplay = function(student) {
 StudentLocationDisplay.prototype.updateDisplay = function() {
 
 	if (this.status === 'Found') {
+		var scannedEvent = this.recentScan.event[0];
+		var text = _(['location', 'activity', 'focus_area'])
+			.map(function(key) {
+				return scannedEvent[key];
+			})
+			.filter()
+			.join(' | ')
+			.value()
+
+		var info = $('<p>').addClass('last-scan-info').addClass('text-primary').text(text);
+
 		this.el.find('.studentInfoContainer').empty();
 		this.el.removeClass('Lost').addClass('Found');
 	}
@@ -69,7 +80,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 		// var time = this.recentScan ? moment(this.recentScan.time).fromNow() : '';
 
 		var info = $('<p>').addClass('last-scan-info').addClass('text-danger').text(this.currentLocation);
-		var correction = $('<p>').addClass('correct-location-info').text('Should be: ' + this.recentScan.event[0].location);
+		var correction = $('<p>').addClass('text-primary').addClass('correct-location-info').text(this.recentScan.event[0].location);
 
 		this.el.find('.studentInfoContainer').empty().append(info, correction);
 	}
@@ -82,7 +93,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 			self.el.removeClass('Found').addClass('Lost');
 			var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
 			if(result.location) {
-				var correction = $('<p>').addClass('correct-location-info').text('Should be at: ' + result.location);
+				var correction = $('<p>').addClass('correct-location-info').addClass('text-primary').text(result.location);
 			} else {
 				var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
 			}
