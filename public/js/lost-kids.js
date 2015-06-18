@@ -118,6 +118,9 @@ StudentLocationDisplay.prototype.render = function() {
 
 // Move the student to a new location based on the most recent scan
 StudentLocationDisplay.prototype.moveMe = function(scan) {
+
+	var self = this;
+
 	// move from one array to another
 	if (this.el) {
 		this.el.remove();
@@ -149,7 +152,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			// Push student into lost after event ends and transition time has lapsed
 			var difference = event_end.add(TRANSITION_LENGTH, 'minutes').diff(moment());
 		}
-		this.transitionTimeout = window.setTimeout(this.moveMe, difference);
+		this.transitionTimeout = window.setTimeout(self.moveMe.bind(self, null), difference);
 	}
 	// If the scan does not match the location, the student is in the wrong location
 	else if (scan) {
@@ -161,9 +164,9 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		this.currentLocation = 'Lost';
 	}
 
-	console.log('this:', this);
+	console.log('this:', this, self);
 	// Now render
-	this.render();
+	self.render();
 };
 
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
