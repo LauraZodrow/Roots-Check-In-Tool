@@ -114,7 +114,7 @@ StudentLocationDisplay.prototype.render = function() {
 	var locationId = location.split(' ').join('');
 	this.updateDisplay();
 	$('#'+locationId).append(this.el);
-}
+};
 
 // Move the student to a new location based on the most recent scan
 StudentLocationDisplay.prototype.moveMe = function(scan) {
@@ -154,15 +154,17 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 	// If the scan does not match the location, the student is in the wrong location
 	else if (scan) {
 		this.status = 'Wrong Location';
-		
 	}
 	// If there is no scan, this method is being triggered by the timeout, meaning the student has not scanned in to anywhere on time and is lost
 	else {
 		this.status = 'Lost';
 		this.currentLocation = 'Lost';
 	}
+
+	console.log('this:', this);
+	// Now render
 	this.render();
-}
+};
 
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
 var scanReceived = function(scan) {
