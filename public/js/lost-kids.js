@@ -131,8 +131,8 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		this.currentLocation = scan.scannedLocation;
 	}
 
-	console.log('scan and correct:', scan, scan.correct, scan && scan.correct);
-	
+	console.log('scan and correct:', scan, scan && scan.correct);
+
 	if (scan && scan.correct) {
 		this.status = 'Found';
 		// Set a timeout based on the end of the event, and move the student to Lost after the event is over as a placeholder until they scan into another event
