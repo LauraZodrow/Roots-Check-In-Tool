@@ -164,7 +164,6 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		this.currentLocation = 'Lost';
 	}
 
-	console.log('this:', this, self);
 	// Now render
 	self.render();
 };
@@ -172,10 +171,14 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
 var scanReceived = function(scan) {
 
+	console.log('Scan:', scan);
+
 	var scanStudent = _.find(studentsArray, function(student) {
 		return student.data.googleId === scan.googleId;
 	});
 
+	console.log('scanStudent:', scanStudent);
+	
 	// If a student is found, move the student and override their recent scan
 	if (scanStudent) {
 		if (scanStudent.transitionTimeout) { window.clearTimeout(scanStudent.transitionTimeout); }
