@@ -59,7 +59,6 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 	if (this.status === 'Found') {
 		var scannedEvent = this.recentScan.event[0];
-		console.log('Scanned Event:', this, this.recentScan);
 		var text = _.chain(['location', 'activity', 'focus_area'])
 			.map(function(key) {
 				return scannedEvent[key];
@@ -131,8 +130,6 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 	if (scan) {
 		this.currentLocation = scan.scannedLocation;
 	}
-
-	console.log('scan and correct:', this, scan, scan && scan.correct);
 
 	if (scan && scan.correct) {
 		this.status = 'Found';
