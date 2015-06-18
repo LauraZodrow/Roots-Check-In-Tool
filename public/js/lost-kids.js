@@ -144,15 +144,14 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		else {
 			var intervals = 60 / (EVENT_LENGTH / (60 * 1000));
 			var end_times = [];
-			var hour_start = moment( new Date() ).startOf('hour');
+			var hour_start; = moment( new Date() ).startOf('hour');
 
 			// Create an array of all end times for this hour
 			// First time period is the event length, subtracting time for transition (e.g. a 10 minute event with 2 minutes to get to the next event would end at 12:08, next event ends at 12:18, etc)
-			end_times.push( hour_start.add(EVENT_LENGTH - TRANSITION_LENGTH, 'ms') );
-			
-			for (var i =2; i<=intervals; i++) {
-				// each run through, add one more event length period
-				end_times.push( hour_start.add(EVENT_LENGTH, 'ms') );
+			for (var i =1; i<=intervals; i++) {
+				// re-initiate the start of hour so that the reference does not get overriden
+				hour_start = moment( new Date() ).startOf('hour');
+				end_times.push( hour_start.add(i * EVENT_LENGTH - TRANSITION_LENGTH, 'ms') );
 			}
 			console.log('end times:', _.map(end_times, function(t) { return t.format('L h:mm a');}));
 			// Event ends at the first end time after this check-in
