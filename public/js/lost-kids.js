@@ -131,7 +131,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		this.currentLocation = scan.scannedLocation;
 	}
 
-	console.log('scan and correct:', scan, scan && scan.correct);
+	console.log('scan and correct:', this, scan, scan && scan.correct);
 
 	if (scan && scan.correct) {
 		this.status = 'Found';
