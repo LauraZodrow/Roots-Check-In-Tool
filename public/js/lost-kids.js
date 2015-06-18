@@ -59,6 +59,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 	if (this.status === 'Found') {
 		var scannedEvent = this.recentScan.event[0];
+		console.log('Scanned Event:', this, this.recentScan);
 		var text = _.chain(['location', 'activity', 'focus_area'])
 			.map(function(key) {
 				return scannedEvent[key];
@@ -144,7 +145,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 		else {
 			var intervals = 60 / (EVENT_LENGTH / (60 * 1000));
 			var end_times = [];
-			var hour_start; = moment( new Date() ).startOf('hour');
+			var hour_start;
 
 			// Create an array of all end times for this hour
 			// First time period is the event length, subtracting time for transition (e.g. a 10 minute event with 2 minutes to get to the next event would end at 12:08, next event ends at 12:18, etc)
@@ -162,7 +163,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 			var difference = event_end.add(TRANSITION_LENGTH, 'ms').diff(now);
 		}
 		console.log('Times:', now.format('L h:mm a'), hour_start.format('L h:mm a'), event_end.format('L h:mm a'), difference);
-		this.transitionTimeout = window.setTimeout(function() { self.moveMe() }, difference);
+		this.transitionTimeout = window.setTimeout( self.moveMe.bind(self, null), difference);
 	}
 	// If the scan does not match the location, the student is in the wrong location
 	else if (scan) {
