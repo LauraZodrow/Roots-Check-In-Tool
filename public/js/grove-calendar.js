@@ -21,6 +21,7 @@ function addToFocus(focus_area) {
 		$('select[name="focus_area"]').select2({
 			data: FOCUS_AREA_OPTIONS,
 			tags: true,
+			allowClear: true,
 			width: 'style'
 		});
 	}

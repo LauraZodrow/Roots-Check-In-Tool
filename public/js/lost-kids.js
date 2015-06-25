@@ -95,7 +95,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 			if(result && result.location) {
 				var correction = $('<p>').addClass('correct-location-info').addClass('text-primary').text(result.location);
 			} else {
-				var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
+				// var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
 			}
 			self.el.find('.studentInfoContainer').empty().append(message, correction);
 		});
