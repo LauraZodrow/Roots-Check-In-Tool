@@ -59,7 +59,7 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 
 	if (this.status === 'Found') {
 		var scannedEvent = this.recentScan.event[0];
-		var text = _.chain(['location', 'activity', 'focus_area'])
+		var text = _.chain(['summary', 'activity', 'focus_area'])
 			.map(function(key) {
 				return scannedEvent[key];
 			})
@@ -91,13 +91,15 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 		// Call the API endpoint to get current event without a scan
 		$.get('/current-event/' + this.data.googleId, function(result) {
 			self.el.removeClass('Found').addClass('Lost');
-			var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
+			// var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
 			if(result && result.location) {
 				var correction = $('<p>').addClass('correct-location-info').addClass('text-primary').text(result.location);
-			} else {
-				// var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
-			}
-			self.el.find('.studentInfoContainer').empty().append(message, correction);
+				self.el.find('.studentInfoContainer').empty().append(correction);
+			} 
+			//else {
+			//  var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
+			// }
+			
 		});
 	}
 };
