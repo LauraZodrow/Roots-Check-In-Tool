@@ -17,8 +17,18 @@ function getCurrentEvent(user, scanned_data) {
 		var index = _.findIndex(user.groveCalendar, function(event) {
 			return !event.checkedIn; 
 		});
-		currentEvent = user.groveCalendar[index]
-		if (scanned_data && currentEvent.location === scanned_data) {
+
+		// If there's not a current event, check to see if there are any grove calendar events, uncheck all of them in, and start at top
+		if (index === -1 && Array.isArray(user.groveCalendar) && user.groveCalendar.length) {
+			_.each(user.groveCalendar, function(event) {
+				event.checkedIn = false;
+			});
+			index = 0;
+		}
+
+		currentEvent = user.groveCalendar[index];
+
+		if (scanned_data && currentEvent && currentEvent.location === scanned_data) {
 			user.groveCalendar[index].checkedIn = true;
 		}
 	}

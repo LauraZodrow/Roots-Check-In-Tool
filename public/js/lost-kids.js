@@ -91,14 +91,11 @@ StudentLocationDisplay.prototype.updateDisplay = function() {
 		// Call the API endpoint to get current event without a scan
 		$.get('/current-event/' + this.data.googleId, function(result) {
 			self.el.removeClass('Found').addClass('Lost');
-			// var message = $('<em>').addClass('text-muted').text('No Recent Scan.');
+			
 			if(result && result.location) {
 				var correction = $('<p>').addClass('correct-location-info').addClass('text-primary').text(result.location);
 				self.el.find('.studentInfoContainer').empty().append(correction);
 			} 
-			//else {
-			//  var correction = $('<p>').addClass('correction-location-info').text('No current event in system.');
-			// }
 			
 		});
 	}
