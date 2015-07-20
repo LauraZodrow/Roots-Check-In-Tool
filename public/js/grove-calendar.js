@@ -30,7 +30,10 @@ function addToFocus(focus_area) {
 // Function for resetting the event form
 function resetForm(hideForm, retainSubmit){
 	$('#add-event-text').text('   Add Event');
-	document.getElementById('activity-form').reset();
+
+	// Manually reset values because select2 doesn't work with form.reset()
+	$('#activity-form select[name="activity"]').val(null);
+	$('#activity-form select[name="focus_area"]').select2('val', null);
 
 	if (!retainSubmit) {
 		$('#add-event').off('click');
@@ -102,6 +105,9 @@ StudentGroveDisplay.prototype.renderCalendar = function(containerId) {
 	$('#student-name').text(this.name);
 	$('#title-text').text("\'s Grove Cycle")
 	$('#student-icon').empty().append('<img class="student-icon" src="'+this.image+'">')
+
+	// Hide the edit / add event form, if it is open, and reset it.
+	resetForm(true, false);
 
 	// Empty out the list if any events are in there, render the new events, then show calendar and make table sortable
 	$(containerId).empty();
