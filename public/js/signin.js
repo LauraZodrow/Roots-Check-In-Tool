@@ -202,7 +202,7 @@ function signinCallback(authResult) {
         console.log('Scan received!', scan, response.id);
         if (scan.googleId === response.id) {
           console.log('Match!')
-          window.close;
+          window.close();
         }
       };
 
