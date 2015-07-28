@@ -19,19 +19,20 @@ mongoose.connect(mongoDB_URL + '/rootsApp');
 
 // SETUP SOCKETS
 var http = require('http').Server(app);
-var io = require('socket.io').listen(http);
+var socket = require('socket.io').listen(http);
 
-io.on('connection', function(socket){
+socket.on('connection', function(socket){
 	console.log('Someone connected!');
 });
 
 // ROUTES
 
 app.get('/', function(req, res) {
-	indexController.index(req, res, io);
+	indexController.index(req, res, socket);
 });
+
 app.get('/scanredirect/:id', function(req, res) {
-	apiController.saveScan(req, res, io);
+	apiController.saveScan(req, res, socket);
 });
 
 app.get('/instructor', indexController.instructor);
@@ -40,7 +41,7 @@ app.get('/whoops', indexController.whoops);
 app.get('/grove-calendar', indexController.groveCalendar);
 
 app.get('/student-tracker', function(req, res) {
-	indexController.studentTracker(req, res, io);
+	indexController.studentTracker(req, res, socket);
 });
 
 // Student Full schedule 

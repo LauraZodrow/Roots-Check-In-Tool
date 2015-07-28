@@ -61,7 +61,7 @@ var apiController = {
 	},
 
 	// On receiving a scan, save it, and then add it to the student who scanned in
-	saveScan: function(req, res, io) {
+	saveScan: function(req, res, socket) {
 
 		var scanned_data = req.query.scanned_data;
 		var googleId = req.params.id;
@@ -97,7 +97,7 @@ var apiController = {
 							console.error(err);
 						}
 						else {
-							io.emit('SCAN!', scan);
+							socket.emit('SCAN!', scan);
 							// Update the user
 							user.recentScan = newScan;
 							user.save(function(err, result){

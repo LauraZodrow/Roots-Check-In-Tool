@@ -173,6 +173,7 @@ function getCalendar(userData){
 
 function signinCallback(authResult) {
   if (authResult['status']['signed_in']) {
+
     // Update the app to reflect a signed in user
     // Hide the sign-in button now that the user is authorized, and show the container
     $('#signinButton').hide();
@@ -187,6 +188,16 @@ function signinCallback(authResult) {
         email: response.emails[0].value,
         image: response.image.url
       }
+
+      // Now that we have the ID of the student that signed in, listen for any scans from that student and close this window on scan
+      var handleScan = function(scan) {
+        if (scan.googleId === response.id) {
+          window.close;
+        }
+      };
+
+      var tracker = io.connect();
+      tracker.on('SCAN!', handleScan);
 
       $('#name').append('<h2>' + response.displayName + '\'s Next Step</h2>');
       

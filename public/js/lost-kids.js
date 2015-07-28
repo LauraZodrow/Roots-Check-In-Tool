@@ -173,7 +173,7 @@ StudentLocationDisplay.prototype.moveMe = function(scan) {
 };
 
 // When receiving a scan, find the student that matches the scan, move them to a new location based on the scan and clear any possible transitions
-var scanReceived = function(scan) {
+function scanReceived(scan) {
 
 	var scanStudent = _.find(studentsArray, function(student) {
 		return student.data.googleId === scan.googleId;
@@ -186,7 +186,7 @@ var scanReceived = function(scan) {
 		// Call the moveMe function, making sure it is bound to the current student
 		scanStudent.moveMe.call(scanStudent, scan);
 	}
-};
+}
 
 $(function(){
 
@@ -233,7 +233,7 @@ $(function(){
 
 	// Get AJAX call to User database and get all the students, create StudentLocationDisplay objects for each, and put them in the students array
 	var tracker = io.connect();
-	tracker.on('SCAN!', scanReceived);
+	tracker.on('SCAN!', scanReceived );
 
 	$.get('api/user', function(students) {
 		studentsArray = _.map(students, function(student) {

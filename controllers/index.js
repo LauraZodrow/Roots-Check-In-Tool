@@ -1,5 +1,5 @@
 var indexController = {
-	index: function(req, res, io) {
+	index: function(req, res, socket) {
 		res.render('index')
 	},
 	instructor: function(req, res){
@@ -14,7 +14,7 @@ var indexController = {
 		res.render('index', {fail: true});
 	},
 
-	studentTracker: function(req, res) {
+	studentTracker: function(req, res, socket) {
 		res.render('student-tracker');
 	},
 
