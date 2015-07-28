@@ -53,6 +53,7 @@ renderLocationImage = function(eventLocation, eventActivity, eventCreator, focus
 // Render the grove calendar.
 renderGroveCalendar = function(numEvents, userData) {
    $.get('/api/grove/' + userData.id, function(calendar) {
+      window.eventData.groveCalendar = calendar;
       var nextEventIndex = _.findIndex(calendar, function(event) {
         return !event.checkedIn;
       });
@@ -115,6 +116,8 @@ function getCalendar(userData){
         //push all events objects in users calendar
         userData.calendar = events;
 
+        window.userData = userData;
+
         //send user data with calendar events to backend, and save to database
         $.ajax ({
           type: "POST",
@@ -135,6 +138,11 @@ function getCalendar(userData){
         var currentEvent = _.find(events, function(event) {
           return moment(currentTime).isBetween(event.start, event.end);
         });
+
+        window.eventData = {
+          currentEvent: currentEvent,
+          nextEvent: nextEvent
+        };
 
         //if a current event is found, show location, teacher, and activity. 
         if (currentEvent) {
