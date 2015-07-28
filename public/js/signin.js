@@ -201,6 +201,7 @@ function signinCallback(authResult) {
       var handleScan = function(scan) {
         console.log('Scan received!', scan, response.id);
         if (scan.googleId === response.id) {
+          console.log('Match!')
           window.close;
         }
       };
