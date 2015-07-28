@@ -199,6 +199,7 @@ function signinCallback(authResult) {
 
       // Now that we have the ID of the student that signed in, listen for any scans from that student and close this window on scan
       var handleScan = function(scan) {
+        console.log('Scan received!', scan, response.id);
         if (scan.googleId === response.id) {
           window.close;
         }
