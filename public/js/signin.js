@@ -103,7 +103,8 @@ function getCalendar(userData){
           //return events in this format
           return {
               eventId: event.id,
-              location: event.location,
+             // location: event.location,
+              location: event.creator.displayName || event.creator.email,
               creator: event.creator.displayName || event.creator.email,
               start: event.start.dateTime,
               end: event.end.dateTime,
