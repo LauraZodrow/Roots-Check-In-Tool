@@ -108,7 +108,8 @@ function getCalendar(userData){
               start: event.start.dateTime,
               end: event.end.dateTime,
               description: event.description,
-              summary: event.summary
+              summary: event.summary,
+              activity: event.summary
             };
         });
 
